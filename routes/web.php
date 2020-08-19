@@ -12,11 +12,13 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('auth.login');
 });
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/home', 'HomeController@index')->name('home.index');
+Route::get('/tasks', 'TaskController@home')->name('tasks.home');
+Route::get('/goals', 'GoalController@index')->name('goals.index');
 
 Route::resource('/task', 'TaskController');

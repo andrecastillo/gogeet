@@ -6,12 +6,11 @@
             <div class="col-md-12">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <h3><span class="glyphicon glyphicon-dashboard"></span> Home </h3> <br>
+                        <h3><span class="glyphicon glyphicon-dashboard"></span> Goals </h3> <br>
                     </div>
 
                     <div class="panel-body">
-                        Home will be like the Asana My Tasks view where I do almost all my task management. Basically
-                        all my tasks prioritized in the order I set, manually, grouped by Today, Very Soon, Soon, Later.
+                        The Goals will go here
                     </div>
                 </div>
             </div>

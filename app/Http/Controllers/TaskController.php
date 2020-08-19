@@ -14,10 +14,15 @@ class TaskController extends Controller
         $this->middleware('auth');
     }
 
+    public function home()
+    {
+        return view('tasks');
+    }
+
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function index()
     {
@@ -43,11 +48,10 @@ class TaskController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
     {
-        //
         $this->validate($request, [
             'name' => 'required',
             'description' => 'required',
@@ -60,7 +64,7 @@ class TaskController extends Controller
         ]);
 
         return response()->json([
-            'taks' => $task,
+            'tasks' => $task,
             'message' => 'Success'
         ], 200);
     }
@@ -92,17 +96,13 @@ class TaskController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Task $task)
     {
-        //
         $this->validate($request, [
-
             'name'        => 'required|max:256',
-
             'description' => 'required',
-
         ]);
 
         $task->name = request('name');
@@ -112,9 +112,7 @@ class TaskController extends Controller
         $task->save();
 
         return response()->json([
-
             'message' => 'Task updated successfully!'
-
         ], 200);
     }
 
@@ -122,12 +120,12 @@ class TaskController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy($id)
+    public function destroy(Task $task)
     {
-        //
         $task->delete();
+
         return response()->json([
             'message' => 'Task deleted successfully!'
         ], 200);
