@@ -17,6 +17,7 @@ Goal.vue:
                                 <tr>
                                     <th>Name</th>
                                     <th>Description</th>
+                                    <th>Due Date</th>
                                     <th>Created</th>
                                     <th>Updated</th>
                                     <th>Action</th>
@@ -51,6 +52,11 @@ Goal.vue:
                         <div class="form-group">
                             <label for="description">Description:</label>
                             <textarea name="description" id="description" cols="30" rows="5" class="form-control" placeholder="Goal Description" v-model="goal.description"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="due_date">Due Date:</label>
+                            <!--<input class="date form-control" name="due_date" id="due_date" placeholder="Due Date" v-model="goal.due_date">-->
+                            <datepicker name="due_date" id="due_date" placeholder="Due Date" v-model="goal.due_date"></datepicker>
                         </div>
                     </div>
 
@@ -105,16 +111,21 @@ Goal.vue:
 </template>
 
 <script>
+    import Datepicker from 'vuejs-datepicker';
 
     export default {
         name: 'goal',
+        components: {
+            Datepicker
+        },
         data(){
             return {
                 goal: {
                     name: '',
                     description: '',
                     created_at: '',
-                    updated_at: ''
+                    updated_at: '',
+                    due_date: ''
                 },
                 errors: [],
                 goals: [],

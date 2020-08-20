@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddGoalDueDate extends Migration
+class AllowDueDateOnGoalsBeNullable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,10 @@ class AddGoalDueDate extends Migration
      */
     public function up()
     {
-        Schema::table('goals', function (Blueprint $table) {
-            //
-            $table->date('due_date');
+        //
+        Schema::table('goals', function(Blueprint $table) {
+            $table->date('due_date')->nullable()->change();
         });
     }
+
 }

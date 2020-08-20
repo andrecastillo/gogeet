@@ -10,6 +10,7 @@ class Goal extends Model
     protected $fillable = [
         'name',
         'user_id',
-        'description'
+        'description',
+        'due_date'
     ];
 }

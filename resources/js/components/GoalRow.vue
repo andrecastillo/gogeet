@@ -3,6 +3,7 @@ GoalRow.vue:
     <tr>
         <td>{{ goal.name }}</td>
         <td>{{ goal.description }}</td>
+        <td>{{ goal.due_date }}</td>
         <td>{{ goal.created_at }}</td>
         <td>{{ goal.updated_at }}</td>
         <td><button @click="initUpdate(index)" class="btn btn-success btn-xs" style="padding:8px"><span class="glyphicon glyphicon-edit"></span></button>

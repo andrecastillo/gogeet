@@ -64,12 +64,14 @@ class GoalController extends Controller
         $this->validate($request, [
             'name' => 'required',
             'description' => 'required',
+            'due_date' => 'date'
         ]);
 
         $goal = Goal::create([
             'name' => request('name'),
             'description' => request('description'),
-            'user_id' => Auth::user()->id
+            'user_id' => Auth::user()->id,
+            'due_date' => request('due_date')
         ]);
 
         return response()->json([
@@ -112,11 +114,14 @@ class GoalController extends Controller
         $this->validate($request, [
             'name'        => 'required|max:256',
             'description' => 'required',
+            'due_date' => 'date',
         ]);
 
         $goal->name = request('name');
 
         $goal->description = request('description');
+
+        $goal->due_date = request('due_date');
 
         $goal->save();
 
