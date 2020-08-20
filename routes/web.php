@@ -12,5 +12,18 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('auth.login');
 });
+
+Auth::routes();
+
+// home
+Route::get('/home', 'HomeController@index')->name('home.index');
+
+// goals
+Route::get('/goals', 'GoalController@home')->name('goals.home');
+Route::resource('/goal', 'GoalController');
+
+// tasks
+Route::get('/tasks', 'TaskController@home')->name('tasks.home');
+Route::resource('/task', 'TaskController');
