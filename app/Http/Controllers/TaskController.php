@@ -2,18 +2,27 @@
 
 namespace App\Http\Controllers;
 
-use App\Task;
+use App\Models\Task;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class TaskController extends Controller
 {
-
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
     public function __construct()
     {
         $this->middleware('auth');
     }
 
+    /**
+     * Show the main view for goals.
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
     public function home()
     {
         return view('tasks');

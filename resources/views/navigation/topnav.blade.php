@@ -12,7 +12,7 @@
             @auth
             <ul class="navbar-nav mr-auto">
                 <li><a href="{{ route('home.index') }}">Home</a> &nbsp;|&nbsp; </li>
-                <li><a href="{{ route('goals.index') }}">Goals</a> &nbsp;|&nbsp; </li>
+                <li><a href="{{ route('goals.home') }}">Goals</a> &nbsp;|&nbsp; </li>
                 <li><a href="{{ route('tasks.home') }}">Tasks</a></li>
             </ul>
             @endauth

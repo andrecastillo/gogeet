@@ -17,8 +17,13 @@ Route::get('/', function () {
 
 Auth::routes();
 
+// home
 Route::get('/home', 'HomeController@index')->name('home.index');
-Route::get('/tasks', 'TaskController@home')->name('tasks.home');
-Route::get('/goals', 'GoalController@index')->name('goals.index');
 
+// goals
+Route::get('/goals', 'GoalController@home')->name('goals.home');
+Route::resource('/goal', 'GoalController');
+
+// tasks
+Route::get('/tasks', 'TaskController@home')->name('tasks.home');
 Route::resource('/task', 'TaskController');
