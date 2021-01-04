@@ -17,13 +17,33 @@ Route::get('/', function () {
 
 Auth::routes();
 
-// home
-Route::get('/home', 'HomeController@index')->name('home.index');
+// agenda
+Route::get('/agenda', 'AgendaController@index')->name('agenda.index');
+
+// calendar 
+Route::get('/calendar', 'CalendarController@index')->name('calendar.index');
+
+// tasks 
+Route::get('/tasks', 'TaskController@home')->name('tasks.index');
+Route::resource('/task', 'TaskController');
+
+// principles
+Route::get('/principles', 'PrincipleController@home')->name('principles.home');
+Route::resource('/principle', 'PrincipleController');
+
+// missions 
+Route::get('/missions', 'MissionController@home')->name('missions.home');
+Route::resource('/mission', 'MissionController');
+
+// projects 
+Route::get('/projects', 'ProjectController@home')->name('projects.home');
+Route::resource('/project', 'ProjectController');
 
 // goals
 Route::get('/goals', 'GoalController@home')->name('goals.home');
 Route::resource('/goal', 'GoalController');
 
-// tasks
-Route::get('/tasks', 'TaskController@home')->name('tasks.home');
-Route::resource('/task', 'TaskController');
+// reminders
+Route::get('/reminders', 'ReminderController@home')->name('reminders.home');
+Route::resource('/reminder', 'ReminderController');
+

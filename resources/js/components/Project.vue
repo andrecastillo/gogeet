@@ -1,28 +1,37 @@
-Goal.vue:
+Project.vue:
 <template>
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <h3><span class="glyphicon glyphicon-dashboard"></span> Goals </h3> <br>
-                        <button @click="initAddGoal()" class="btn btn-success " style="padding:5px">
-                            Add New Goal
+                        <h3><span class="glyphicon glyphicon-dashboard"></span> Projects </h3> <br>
+                        <button @click="initAddProject()" class="btn btn-success " style="padding:5px">
+                            Add New Project
                         </button>
                     </div>
 
                     <div class="panel-body">
-                        <table class="table table-bordered table-striped table-responsive" v-if="goals.length > 0">
+                        <table class="table table-bordered table-striped table-responsive" v-if="projects.length > 0">
                             <tbody>
-                                <tr>
-                                    <th>Name</th>
-                                    <th>Description</th>
-                                    <th>Due Date</th>
-                                    <th>Created</th>
-                                    <th>Updated</th>
-                                    <th>Action</th>
-                                </tr>
-                                <goal-row v-for="(goal, index) in goals" :goal="goal" :index="index"></goal-row>
+                            <tr>
+                                <th>No.</th>
+                                <th>Name</th>
+                                <th>Description</th>
+                                <th>Created</th>
+                                <th>Updated</th>
+                                <th>Action</th>
+                            </tr>
+                            <tr v-for="(project, index) in projects">
+                                <td>{{ index + 1 }}</td>
+                                <td>{{ project.name }}</td>
+                                <td>{{ project.description }}</td>
+                                <td>{{ project.created_at }}</td>
+                                <td>{{ project.updated_at }}</td>
+                                <td><button @click="initUpdate(index)" class="btn btn-success btn-xs" style="padding:8px"><span class="glyphicon glyphicon-edit"></span></button>
+                                    <button @click="deleteProject(index)" class="btn btn-danger btn-xs" style="padding:8px"><span class="glyphicon glyphicon-trash"></span></button>
+                                </td>
+                            </tr>
                             </tbody>
                         </table>
                     </div>
@@ -30,13 +39,13 @@ Goal.vue:
             </div>
         </div>
 
-        <div class="modal fade" tabindex="-1" role="dialog" id="add_goal_model">
+        <div class="modal fade" tabindex="-1" role="dialog" id="add_project_model">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                             aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title">Add New Goal</h4>
+                        <h4 class="modal-title">Add New Project</h4>
                     </div>
 
                     <div class="modal-body">
@@ -47,33 +56,28 @@ Goal.vue:
                         </div>
                         <div class="form-group">
                             <label for="names">Name:</label>
-                            <input type="text" name="name" id="name" placeholder="Goal Name" class="form-control" v-model="goal.name">
+                            <input type="text" name="name" id="name" placeholder="Project Name" class="form-control" v-model="project.name">
                         </div>
                         <div class="form-group">
                             <label for="description">Description:</label>
-                            <textarea name="description" id="description" cols="30" rows="5" class="form-control" placeholder="Goal Description" v-model="goal.description"></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label for="due_date">Due Date:</label>
-                            <!--<input class="date form-control" name="due_date" id="due_date" placeholder="Due Date" v-model="goal.due_date">-->
-                            <datepicker name="due_date" id="due_date" placeholder="Due Date" v-model="goal.due_date"></datepicker>
+                            <textarea name="description" id="description" cols="30" rows="5" class="form-control" placeholder="Project Description" v-model="project.description"></textarea>
                         </div>
                     </div>
 
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button type="button" @click="createGoal" class="btn btn-primary">Submit</button>
+                        <button type="button" @click="createProject" class="btn btn-primary">Submit</button>
                     </div>
                 </div><!-- /.modal-content -->
             </div><!-- /.modal-dialog -->
         </div><!-- /.modal -->
 
-        <div class="modal fade" tabindex="-1" role="dialog" id="update_goal_model">
+        <div class="modal fade" tabindex="-1" role="dialog" id="update_project_model">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title">Update Goal</h4>
+                        <h4 class="modal-title">Update Project</h4>
                     </div>
 
                     <div class="modal-body">
@@ -85,20 +89,20 @@ Goal.vue:
 
                         <div class="form-group">
                             <label>Name:</label>
-                            <input type="text" placeholder="Goal Name" class="form-control"
-                                   v-model="update_goal.name">
+                            <input type="text" placeholder="Project Name" class="form-control"
+                                   v-model="update_project.name">
                         </div>
 
                         <div class="form-group">
                             <label for="description">Description:</label>
                             <textarea cols="30" rows="5" class="form-control"
-                                      placeholder="Goal Description" v-model="update_goal.description"></textarea>
+                                      placeholder="Project Description" v-model="update_project.description"></textarea>
                         </div>
                     </div>
 
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button type="button" @click="updateGoal" class="btn btn-primary">Submit</button>
+                        <button type="button" @click="updateProject" class="btn btn-primary">Submit</button>
                     </div>
 
                 </div><!-- /.modal-content -->
@@ -111,60 +115,54 @@ Goal.vue:
 </template>
 
 <script>
-    import Datepicker from 'vuejs-datepicker';
-    var moment = require('moment');
 
     export default {
-        name: 'goal',
-        components: {
-            Datepicker
-        },
+        name: 'project',
         data(){
             return {
-                goal: {
+                project: {
                     name: '',
                     description: '',
                     created_at: '',
-                    updated_at: '',
-                    due_date: ''
+                    updated_at: ''
                 },
                 errors: [],
-                goals: [],
-                update_goal: {}
+                projects: [],
+                update_project: {}
             }
         },
+
         mounted()
         {
-            this.readGoals();
+            this.readProjects();
         },
         methods: {
-            deleteGoal(index)
+            deleteProject(index)
             {
-                let conf = confirm("Do you ready want to delete this goal?");
+                let conf = confirm("Do you ready want to delete this project?");
                 if (conf === true) {
-                    axios.delete('/goal/' + this.goals[index].id)
+                    axios.delete('/project/' + this.projects[index].id)
                         .then(response => {
-                            this.goals.splice(index, 1);
+                            this.projects.splice(index, 1);
                         })
                         .catch(error => {
                         });
                 }
             },
-            initAddGoal()
+            initAddProject()
             {
-                $("#add_goal_model").modal("show");
+                $("#add_project_model").modal("show");
             },
-            createGoal()
+            createProject()
             {
-                axios.post('/goal', {
-                    name: this.goal.name,
-                    description: this.goal.description,
-                    due_date: this.goal.due_date
+                axios.post('/project', {
+                    name: this.project.name,
+                    description: this.project.description,
                 })
                     .then(response => {
                         this.reset();
-                        this.goals.push(response.data.goals);
-                        $("#add_goal_model").modal("hide");
+                        this.projects.push(response.data.projects);
+                        $("#add_project_model").modal("hide");
                     })
                     .catch(error => {
                         this.errors = [];
@@ -179,30 +177,30 @@ Goal.vue:
             },
             reset()
             {
-                this.goal.name = '';
-                this.goal.description = '';
+                this.project.name = '';
+                this.project.description = '';
             },
-            readGoals()
+            readProjects()
             {
-                axios.get('/goal')
+                axios.get('/project')
                     .then(response => {
-                        this.goals = response.data.goals;
+                        this.projects = response.data.projects;
                     });
             },
             initUpdate(index)
             {
                 this.errors = [];
-                $("#update_goal_model").modal("show");
-                this.update_goal = this.goals[index];
+                $("#update_project_model").modal("show");
+                this.update_project = this.projects[index];
             },
-            updateGoal()
+            updateProject()
             {
-                axios.patch('/goal/' + this.update_goal.id, {
-                    name: this.update_goal.name,
-                    description: this.update_goal.description,
+                axios.patch('/project/' + this.update_project.id, {
+                    name: this.update_project.name,
+                    description: this.update_project.description,
                 })
                     .then(response => {
-                        $("#update_goal_model").modal("hide");
+                        $("#update_project_model").modal("hide");
                     })
                     .catch(error => {
                         this.errors = [];
