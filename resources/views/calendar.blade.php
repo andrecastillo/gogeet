@@ -11,7 +11,7 @@
 
                     <div class="panel-body">
                         The calendar is going to be like google calendar where I can create events and see them. 
-                        For now it'll just be events, nothing else will show up on the calendar.
+                        For now it'll just be events, nothing else will show up on the calendar. Although, for, now now, it'll be nothing.
                     </div>
                 </div>
             </div>
