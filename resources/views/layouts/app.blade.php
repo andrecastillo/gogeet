@@ -27,7 +27,7 @@
         <!-- /topnav -->
 
         <div class="container-fluid">
-            <div class="row">
+            <div class="row pt-3">
                 <!-- sidebar -->
                 @include('partials.sidebar')
                 <!-- /sidebar -->
