@@ -9,18 +9,7 @@
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <!-- Left Side Of Navbar -->
-            @auth
-            <ul class="navbar-nav mr-auto">
-                <li><a href="{{ route('agenda.index') }}">Agenda</a> &nbsp;|&nbsp; </li>
-                <li><a href="{{ route('calendar.index') }}">Calendar</a> &nbsp;|&nbsp; </li>
-                <li><a href="{{ route('tasks.index') }}">My Tasks</a> &nbsp;|&nbsp; </li>
-                <li><a href="{{ route('principles.home') }}">Principles</a> &nbsp;|&nbsp; </li>
-                <li><a href="{{ route('missions.home') }}">Missions</a> &nbsp;|&nbsp; </li>
-                <li><a href="{{ route('projects.home') }}">Projects</a> &nbsp;|&nbsp; </li>
-                <li><a href="{{ route('goals.home') }}">Goals</a> &nbsp;|&nbsp; </li>
-                <li><a href="{{ route('reminders.home') }}">Reminders</a></li>
-            </ul>
-            @endauth
+
 
             <!-- Right Side Of Navbar -->
             <ul class="navbar-nav ml-auto">
