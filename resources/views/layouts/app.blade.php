@@ -23,7 +23,7 @@
 <body>
     <div id="app">
         <!-- topnav -->
-        @include('navigation.topnav')
+        @include('partials.topnav')
         <!-- /topnav -->
 
         <div class="container-fluid">

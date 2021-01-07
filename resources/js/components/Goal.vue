@@ -22,7 +22,7 @@ Goal.vue:
                                     <th>Updated</th>
                                     <th>Action</th>
                                 </tr>
-                                <goal-row v-for="(goal, index) in goals" :goal="goal" :index="index"></goal-row>
+                                <goal-row v-for="(goal, index) in goals" :goal="goal" v-bind:index="index" :goals.sync="goals"></goal-row>
                             </tbody>
                         </table>
                     </div>
@@ -138,18 +138,6 @@ Goal.vue:
             this.readGoals();
         },
         methods: {
-            deleteGoal(index)
-            {
-                let conf = confirm("Do you ready want to delete this goal?");
-                if (conf === true) {
-                    axios.delete('/goal/' + this.goals[index].id)
-                        .then(response => {
-                            this.goals.splice(index, 1);
-                        })
-                        .catch(error => {
-                        });
-                }
-            },
             initAddGoal()
             {
                 $("#add_goal_model").modal("show");

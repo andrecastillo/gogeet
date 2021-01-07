@@ -25,8 +25,26 @@ export default {
         index: {
             type: Number,
             required: true
+        },
+        goals: {
+            type: Array,
+            required: true
         }
-    }
+    },
+    methods: {
+      deleteGoal (index) {
+        let conf = confirm("Do you really want to delete this goal?");
+        if (conf === true) {
+          axios.delete('/goal/' + this.goal.id)
+            .then(response => {
+              //this.goal.splice(index, 1);
+              this.goals.splice(index);
+            })
+            .catch(error => {
+            });
+        }
+      },
+    },
 }
 
 </script>
