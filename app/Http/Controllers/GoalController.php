@@ -63,8 +63,7 @@ class GoalController extends Controller
     {
         $this->validate($request, [
             'name' => 'required',
-            'description' => 'required',
-            'due_date' => 'date'
+            'due_date' => 'nullable|date'
         ]);
 
         $goal = Goal::create([

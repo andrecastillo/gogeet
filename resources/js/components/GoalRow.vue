@@ -25,10 +25,6 @@ export default {
         index: {
             type: Number,
             required: true
-        },
-        goals: {
-            type: Array,
-            required: true
         }
     },
     methods: {

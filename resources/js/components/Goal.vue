@@ -22,7 +22,7 @@ Goal.vue:
                                     <th>Updated</th>
                                     <th>Action</th>
                                 </tr>
-                                <goal-row v-for="(goal, index) in goals" :goal="goal" :index="index" @delete-goal="deleteGoal"></goal-row>
+                                <goal-row v-for="(goal, index) in goals" :key="goal.id" :goal="goal" :index="index" @delete-goal="deleteGoal"></goal-row>
                             </tbody>
                         </table>
                     </div>
@@ -46,7 +46,7 @@ Goal.vue:
                             </ul>
                         </div>
                         <div class="form-group">
-                            <label for="names">Name:</label>
+                            <label for="name">Name:</label>
                             <input type="text" name="name" id="name" placeholder="Goal Name" class="form-control" v-model="goal.name">
                         </div>
                         <div class="form-group">
@@ -149,21 +149,21 @@ Goal.vue:
                     description: this.goal.description,
                     due_date: this.goal.due_date
                 })
-                    .then(response => {
-                        this.reset();
-                        this.goals.push(response.data.goals);
-                        $("#add_goal_model").modal("hide");
-                    })
-                    .catch(error => {
-                        this.errors = [];
-                        if (error.response.data.errors && error.response.data.errors.name) {
-                            this.errors.push(error.response.data.errors.name[0]);
-                        }
-                        if (error.response.data.errors && error.response.data.errors.description)
-                        {
-                            this.errors.push(error.response.data.errors.description[0]);
-                        }
-                    });
+                .then(response => {
+                    this.reset();
+                    this.goals.push(response.data.goals);
+                    $("#add_goal_model").modal("hide");
+                })
+                .catch(error => {
+                    this.errors = [];
+                    if (error.response.data.errors && error.response.data.errors.name) {
+                        this.errors.push(error.response.data.errors.name[0]);
+                    }
+                    if (error.response.data.errors && error.response.data.errors.description)
+                    {
+                        this.errors.push(error.response.data.errors.description[0]);
+                    }
+                });
             },
             deleteGoal(index) {
               this.goals.splice(index, 1);
