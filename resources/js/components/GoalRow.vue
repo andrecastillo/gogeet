@@ -37,8 +37,7 @@ export default {
         if (conf === true) {
           axios.delete('/goal/' + this.goal.id)
             .then(response => {
-              //this.goal.splice(index, 1);
-              this.goals.splice(index);
+              this.$emit('delete-goal', { index });
             })
             .catch(error => {
             });

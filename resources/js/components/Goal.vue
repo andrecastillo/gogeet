@@ -22,7 +22,7 @@ Goal.vue:
                                     <th>Updated</th>
                                     <th>Action</th>
                                 </tr>
-                                <goal-row v-for="(goal, index) in goals" :goal="goal" v-bind:index="index" :goals.sync="goals"></goal-row>
+                                <goal-row v-for="(goal, index) in goals" :goal="goal" :index="index" @delete-goal="deleteGoal"></goal-row>
                             </tbody>
                         </table>
                     </div>
@@ -164,6 +164,9 @@ Goal.vue:
                             this.errors.push(error.response.data.errors.description[0]);
                         }
                     });
+            },
+            deleteGoal(index) {
+              this.goals.splice(index, 1);
             },
             reset()
             {
