@@ -1,4 +1,4 @@
 @extends('layouts.app')
 @section('content')
-    <principle></principle>
+    <index type="principle"></index>
 @endsection
