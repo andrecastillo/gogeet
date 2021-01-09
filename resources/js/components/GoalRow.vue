@@ -3,9 +3,9 @@ GoalRow.vue:
     <tr>
         <td>{{ goal.name }}</td>
         <td>{{ goal.description }}</td>
-        <td>{{ _formatDate(goal.due_date) }}</td>
-        <td>{{ goal.created_at }}</td>
-        <td>{{ goal.updated_at }}</td>
+        <td>{{ _formatDateTime(goal.due_date, 'MM/DD/YYYY') }}</td>
+        <td>{{ _formatDateTime(goal.created_at) }}</td>
+        <td>{{ _formatDateTime(goal.updated_at) }}</td>
         <td><button @click="initUpdate(index)" class="btn btn-success btn-xs" style="padding:8px"><span class="glyphicon glyphicon-edit"></span></button>
             <button @click="deleteGoal(index)" class="btn btn-danger btn-xs" style="padding:8px"><span class="glyphicon glyphicon-trash"></span></button>
         </td>
@@ -38,9 +38,11 @@ export default {
           });
         }
       },
-      _formatDate(date, format = "MM/DD/YYYY") {
-        return date === null ? '' : moment(date).format('MM/DD/YYYY');
+      _formatDateTime(date, format = 'MM/DD/YYYY hh:mm A') {
+        return date === null ? '' : moment(date).format(format);
       },
+
+
     }
 }
 

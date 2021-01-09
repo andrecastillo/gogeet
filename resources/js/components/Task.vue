@@ -26,8 +26,8 @@ Task.vue:
                                 <td>{{ index + 1 }}</td>
                                 <td>{{ task.name }}</td>
                                 <td>{{ task.description }}</td>
-                                <td>{{ task.created_at }}</td>
-                                <td>{{ task.updated_at }}</td>
+                                <td>{{ _formatDateTime(task.created_at) }}</td>
+                                <td>{{ _formatDateTime(task.updated_at) }}</td>
                                 <td><button @click="initUpdate(index)" class="btn btn-success btn-xs" style="padding:8px"><span class="glyphicon glyphicon-edit"></span></button>
                                     <button @click="deleteTask(index)" class="btn btn-danger btn-xs" style="padding:8px"><span class="glyphicon glyphicon-trash"></span></button>
                                 </td>
@@ -211,7 +211,10 @@ Task.vue:
                             this.errors.push(error.response.data.errors.description[0]);
                         }
                     });
-            }
+            },
+            _formatDateTime(date, format = "MM/DD/YYYY hh:mm A") {
+                return date === null ? '' : moment(date).format(format);
+            },
         }
     }
 

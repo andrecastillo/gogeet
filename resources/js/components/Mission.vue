@@ -26,8 +26,8 @@ Mission.vue:
                                 <td>{{ index + 1 }}</td>
                                 <td>{{ mission.name }}</td>
                                 <td>{{ mission.description }}</td>
-                                <td>{{ mission.created_at }}</td>
-                                <td>{{ mission.updated_at }}</td>
+                                <td>{{ _formatDateTime(mission.created_at) }}</td>
+                                <td>{{ _formatDateTime(mission.updated_at) }}</td>
                                 <td><button @click="initUpdate(index)" class="btn btn-success btn-xs" style="padding:8px"><span class="glyphicon glyphicon-edit"></span></button>
                                     <button @click="deleteMission(index)" class="btn btn-danger btn-xs" style="padding:8px"><span class="glyphicon glyphicon-trash"></span></button>
                                 </td>
@@ -211,7 +211,10 @@ Mission.vue:
                             this.errors.push(error.response.data.errors.description[0]);
                         }
                     });
-            }
+            },
+            _formatDateTime(date, format = "MM/DD/YYYY hh:mm A") {
+                return date === null ? '' : moment(date).format(format);
+            },
         }
     }
 
