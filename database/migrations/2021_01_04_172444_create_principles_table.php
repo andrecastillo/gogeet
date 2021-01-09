@@ -17,7 +17,7 @@ class CreatePrinciplesTable extends Migration
             $table->bigIncrements('id');
             $table->string('name', 256);
             $table->unsignedInteger('user_id');
-            $table->text('description');
+            $table->text('description')->nullable();
             $table->timestamps();
         });
     }

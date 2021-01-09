@@ -75,7 +75,6 @@ class GoalController extends Controller
             'due_date' => request('due_date')
         ]);
 
-
         return response()->json([
             'goals' => $goal,
             'message' => 'Success'
@@ -116,15 +115,12 @@ class GoalController extends Controller
         $this->validate($request, [
             'name'        => 'required',
             'description' => 'required',
-            'due_date' => 'date',
+            'due_date' => 'nullable|date',
         ]);
 
         $goal->name = request('name');
-
         $goal->description = request('description');
-
         $goal->due_date = request('due_date');
-
         $goal->save();
 
         return response()->json([

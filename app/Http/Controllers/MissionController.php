@@ -56,14 +56,16 @@ class MissionController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\JsonResponse
+     * @throws \Illuminate\Validation\ValidationException
      */
     public function store(Request $request)
     {
         $this->validate($request, [
             'name' => 'required',
-            'description' => 'required'
+            'description' => 'required',
+            'due_date' => 'nullable|date',
         ]);
 
         $mission = Mission::create([
@@ -104,21 +106,22 @@ class MissionController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
      * @return \Illuminate\Http\JsonResponse
+     * @throws \Illuminate\Validation\ValidationException
      */
     public function update(Request $request, Mission $mission)
     {
         $this->validate($request, [
             'name'        => 'required',
-            'description' => 'required'
+            'description' => 'required',
+            'due_date' => 'nullable|date'
         ]);
 
         $mission->name = request('name');
-
         $mission->description = request('description');
-
+        $mission->due_date = request('due_date');
         $mission->save();
 
         return response()->json([
@@ -129,8 +132,9 @@ class MissionController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\JsonResponse
+     * @throws \Exception
      */
     public function destroy(Mission $mission)
     {

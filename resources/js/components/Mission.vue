@@ -18,6 +18,7 @@ Mission.vue:
                                 <th>No.</th>
                                 <th>Name</th>
                                 <th>Description</th>
+                                <th>Due Date</th>
                                 <th>Created</th>
                                 <th>Updated</th>
                                 <th>Action</th>
@@ -26,6 +27,7 @@ Mission.vue:
                                 <td>{{ index + 1 }}</td>
                                 <td>{{ mission.name }}</td>
                                 <td>{{ mission.description }}</td>
+                                <td>{{ _formatDateTime(mission.due_date, 'MM/DD/YYYY') }}</td>
                                 <td>{{ _formatDateTime(mission.created_at) }}</td>
                                 <td>{{ _formatDateTime(mission.updated_at) }}</td>
                                 <td><button @click="initUpdate(index)" class="btn btn-success btn-xs" style="padding:8px"><span class="glyphicon glyphicon-edit"></span></button>
@@ -55,13 +57,17 @@ Mission.vue:
                             </ul>
                         </div>
                         <div class="form-group">
-                            <label for="names">Name:</label>
+                            <label for="name">Name:</label>
                             <input type="text" name="name" id="name" placeholder="Mission Name" class="form-control" v-model="mission.name">
                         </div>
                         <div class="form-group">
                             <label for="description">Description:</label>
                             <textarea name="description" id="description" cols="30" rows="5" class="form-control" placeholder="Mission Description" v-model="mission.description"></textarea>
                         </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="due_date">Due Date:</label>
+                        <datepicker name="due_date" id="due_date" placeholder="Due Date" v-model="mission.due_date"></datepicker>
                     </div>
 
                     <div class="modal-footer">
@@ -116,106 +122,123 @@ Mission.vue:
 
 <script>
 
-    export default {
-        name: 'mission',
-        data(){
-            return {
-                mission: {
-                    name: '',
-                    description: '',
-                    created_at: '',
-                    updated_at: ''
-                },
-                errors: [],
-                missions: [],
-                update_mission: {}
+import Datepicker from 'vuejs-datepicker';
+
+export default {
+    name: 'mission',
+    components: {
+        Datepicker
+    },
+    data(){
+        return {
+            mission: {
+                name: '',
+                description: '',
+                due_date: '',
+                created_at: '',
+                updated_at: ''
+            },
+            errors: [],
+            missions: [],
+            update_mission: {}
+        }
+    },
+
+    mounted()
+    {
+        this.readMissions();
+    },
+    methods: {
+
+        deleteMission(index)
+        {
+            let conf = confirm("Do you ready want to delete this mission?");
+            if (conf === true) {
+                axios.delete('/mission/' + this.missions[index].id)
+                    .then(response => {
+                        this.missions.splice(index, 1);
+                    })
+                    .catch(error => {
+                    });
             }
         },
 
-        mounted()
+        initAddMission()
         {
-            this.readMissions();
+            $("#add_mission_model").modal("show");
         },
-        methods: {
-            deleteMission(index)
-            {
-                let conf = confirm("Do you ready want to delete this mission?");
-                if (conf === true) {
-                    axios.delete('/mission/' + this.missions[index].id)
-                        .then(response => {
-                            this.missions.splice(index, 1);
-                        })
-                        .catch(error => {
-                        });
-                }
-            },
-            initAddMission()
-            {
-                $("#add_mission_model").modal("show");
-            },
-            createMission()
-            {
-                axios.post('/mission', {
-                    name: this.mission.name,
-                    description: this.mission.description,
-                })
-                    .then(response => {
-                        this.reset();
-                        this.missions.push(response.data.missions);
-                        $("#add_mission_model").modal("hide");
-                    })
-                    .catch(error => {
-                        this.errors = [];
-                        if (error.response.data.errors && error.response.data.errors.name) {
-                            this.errors.push(error.response.data.errors.name[0]);
-                        }
-                        if (error.response.data.errors && error.response.data.errors.description)
-                        {
-                            this.errors.push(error.response.data.errors.description[0]);
-                        }
-                    });
-            },
-            reset()
-            {
-                this.mission.name = '';
-                this.mission.description = '';
-            },
-            readMissions()
-            {
-                axios.get('/mission')
-                    .then(response => {
-                        this.missions = response.data.missions;
-                    });
-            },
-            initUpdate(index)
-            {
-                this.errors = [];
-                $("#update_mission_model").modal("show");
-                this.update_mission = this.missions[index];
-            },
-            updateMission()
-            {
-                axios.patch('/mission/' + this.update_mission.id, {
-                    name: this.update_mission.name,
-                    description: this.update_mission.description,
-                })
+
+        createMission()
+        {
+            axios.post('/mission', {
+                name: this.mission.name,
+                description: this.mission.description,
+                due_date: this.mission.due_date === '' ? null : moment(this.mission.due_date).format('YYYY-MM-DD')
+            })
                 .then(response => {
-                    $("#update_mission_model").modal("hide");
+                    this.reset();
+                    this.missions.push(response.data.missions);
+                    $("#add_mission_model").modal("hide");
                 })
                 .catch(error => {
                     this.errors = [];
-                    if (error.response.data.errors.name) {
+                    if (error.response.data.errors && error.response.data.errors.name) {
                         this.errors.push(error.response.data.errors.name[0]);
                     }
-                    if (error.response.data.errors.description) {
+                    if (error.response.data.errors && error.response.data.errors.description)
+                    {
                         this.errors.push(error.response.data.errors.description[0]);
                     }
                 });
-            },
-            _formatDateTime(date, format = "MM/DD/YYYY hh:mm A") {
-                return date === null ? '' : moment(date).format(format);
-            },
-        }
+        },
+
+        reset()
+        {
+            this.mission.name = '';
+            this.mission.description = '';
+            this.mission.due_date = '';
+        },
+
+        readMissions()
+        {
+            axios.get('/mission')
+                .then(response => {
+                    this.missions = response.data.missions;
+                });
+        },
+
+        initUpdate(index)
+        {
+            this.errors = [];
+            $("#update_mission_model").modal("show");
+            this.update_mission = this.missions[index];
+        },
+
+        updateMission()
+        {
+            axios.patch('/mission/' + this.update_mission.id, {
+                name: this.update_mission.name,
+                description: this.update_mission.description,
+            })
+            .then(response => {
+                $("#update_mission_model").modal("hide");
+            })
+            .catch(error => {
+                this.errors = [];
+                if (error.response.data.errors.name) {
+                    this.errors.push(error.response.data.errors.name[0]);
+                }
+                if (error.response.data.errors.description) {
+                    this.errors.push(error.response.data.errors.description[0]);
+                }
+            });
+        },
+
+        _formatDateTime(date, format = "MM/DD/YYYY hh:mm A") {
+            return date === null ? '' : moment(date).format(format);
+        },
+
     }
+}
 
 </script>
