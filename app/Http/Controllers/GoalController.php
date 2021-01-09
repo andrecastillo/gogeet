@@ -61,6 +61,7 @@ class GoalController extends Controller
      */
     public function store(Request $request)
     {
+
         $this->validate($request, [
             'name' => 'required',
             'due_date' => 'nullable|date'
@@ -72,6 +73,7 @@ class GoalController extends Controller
             'user_id' => Auth::user()->id,
             'due_date' => request('due_date')
         ]);
+
 
         return response()->json([
             'goals' => $goal,

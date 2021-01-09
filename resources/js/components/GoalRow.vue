@@ -3,7 +3,7 @@ GoalRow.vue:
     <tr>
         <td>{{ goal.name }}</td>
         <td>{{ goal.description }}</td>
-        <td>{{ goal.due_date }}</td>
+        <td>{{ _formatDate(goal.due_date) }}</td>
         <td>{{ goal.created_at }}</td>
         <td>{{ goal.updated_at }}</td>
         <td><button @click="initUpdate(index)" class="btn btn-success btn-xs" style="padding:8px"><span class="glyphicon glyphicon-edit"></span></button>
@@ -14,7 +14,6 @@ GoalRow.vue:
 
 
 <script>
-
 export default {
     name: 'goal-row',
     props: {
@@ -31,15 +30,22 @@ export default {
       deleteGoal (index) {
         let conf = confirm("Do you really want to delete this goal?");
         if (conf === true) {
+          this.$emit('delete-goal', { index });
+            /*
           axios.delete('/goal/' + this.goal.id)
             .then(response => {
               this.$emit('delete-goal', { index });
             })
             .catch(error => {
             });
+
+             */
         }
       },
-    },
+      _formatDate(date, format = "MM/DD/YYYY") {
+        return this.goal.due_date === null ? '' : moment(this.goal.due_date).format('MM/DD/YYYY');
+      },
+    }
 }
 
 </script>

@@ -22,7 +22,7 @@ Goal.vue:
                                     <th>Updated</th>
                                     <th>Action</th>
                                 </tr>
-                                <goal-row v-for="(goal, index) in goals" :key="goal.id" :goal="goal" :index="index" @delete-goal="deleteGoal"></goal-row>
+                                <goal-row v-for="(goal, index) in goals" :key="index" :goal="goal" :index="index" @delete-goal="deleteGoal"></goal-row>
                             </tbody>
                         </table>
                     </div>
@@ -55,7 +55,6 @@ Goal.vue:
                         </div>
                         <div class="form-group">
                             <label for="due_date">Due Date:</label>
-                            <!--<input class="date form-control" name="due_date" id="due_date" placeholder="Due Date" v-model="goal.due_date">-->
                             <datepicker name="due_date" id="due_date" placeholder="Due Date" v-model="goal.due_date"></datepicker>
                         </div>
                     </div>
@@ -112,7 +111,6 @@ Goal.vue:
 
 <script>
     import Datepicker from 'vuejs-datepicker';
-    var moment = require('moment');
 
     export default {
         name: 'goal',
@@ -147,7 +145,7 @@ Goal.vue:
                 axios.post('/goal', {
                     name: this.goal.name,
                     description: this.goal.description,
-                    due_date: this.goal.due_date
+                    due_date: this.goal.due_date === '' ? null : moment(this.goal.due_date).format('YYYY-MM-DD')
                 })
                 .then(response => {
                     this.reset();
@@ -166,12 +164,14 @@ Goal.vue:
                 });
             },
             deleteGoal(index) {
+              console.log(index);
               this.goals.splice(index, 1);
             },
             reset()
             {
                 this.goal.name = '';
                 this.goal.description = '';
+                this.goal.due_date = '';
             },
             readGoals()
             {
