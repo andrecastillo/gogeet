@@ -27,23 +27,19 @@ export default {
         }
     },
     methods: {
-      deleteGoal (index) {
+      deleteGoal () {
         let conf = confirm("Do you really want to delete this goal?");
         if (conf === true) {
-          this.$emit('delete-goal', { index });
-            /*
-          axios.delete('/goal/' + this.goal.id)
-            .then(response => {
-              this.$emit('delete-goal', { index });
-            })
-            .catch(error => {
-            });
-
-             */
+        axios.delete('/goal/' + this.goal.id)
+          .then(response => {
+            this.$emit('remove');
+          })
+          .catch(error => {
+          });
         }
       },
       _formatDate(date, format = "MM/DD/YYYY") {
-        return this.goal.due_date === null ? '' : moment(this.goal.due_date).format('MM/DD/YYYY');
+        return date === null ? '' : moment(date).format('MM/DD/YYYY');
       },
     }
 }

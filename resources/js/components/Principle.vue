@@ -26,7 +26,7 @@ Principle.vue:
                                 <td>{{ index + 1 }}</td>
                                 <td>{{ principle.name }}</td>
                                 <td>{{ principle.description }}</td>
-                                <td>{{ principle.created_at }}</td>
+                                <td>{{ _formatDateTime(principle.created_at) }}</td>
                                 <td>{{ principle.updated_at }}</td>
                                 <td><button @click="initUpdate(index)" class="btn btn-success btn-xs" style="padding:8px"><span class="glyphicon glyphicon-edit"></span></button>
                                     <button @click="deletePrinciple(index)" class="btn btn-danger btn-xs" style="padding:8px"><span class="glyphicon glyphicon-trash"></span></button>
@@ -211,7 +211,10 @@ Principle.vue:
                             this.errors.push(error.response.data.errors.description[0]);
                         }
                     });
-            }
+            },
+            _formatDateTime(date, format = "MM/DD/YYYY HH:mm:ss") {
+                return this.princple.due_date === null ? '' : moment(this.goal.due_date).format('MM/DD/YYYY');
+            },
         }
     }
 

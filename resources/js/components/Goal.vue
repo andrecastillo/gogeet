@@ -22,7 +22,7 @@ Goal.vue:
                                     <th>Updated</th>
                                     <th>Action</th>
                                 </tr>
-                                <goal-row v-for="(goal, index) in goals" :key="index" :goal="goal" :index="index" @delete-goal="deleteGoal"></goal-row>
+                                <goal-row v-for="(goal, index) in goals" :key="index" :goal="goal" :index="index" @remove="deleteGoal(index)"></goal-row>
                             </tbody>
                         </table>
                     </div>
@@ -164,7 +164,6 @@ Goal.vue:
                 });
             },
             deleteGoal(index) {
-              console.log(index);
               this.goals.splice(index, 1);
             },
             reset()
