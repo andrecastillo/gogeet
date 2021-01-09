@@ -137,6 +137,7 @@ Principle.vue:
             this.readPrinciples();
         },
         methods: {
+
             deletePrinciple(index)
             {
                 let conf = confirm("Do you ready want to delete this principle?");
@@ -149,10 +150,12 @@ Principle.vue:
                         });
                 }
             },
+
             initAddPrinciple()
             {
                 $("#add_principle_model").modal("show");
             },
+
             createPrinciple()
             {
                 axios.post('/principle', {
@@ -175,11 +178,13 @@ Principle.vue:
                         }
                     });
             },
+
             reset()
             {
                 this.principle.name = '';
                 this.principle.description = '';
             },
+
             readPrinciples()
             {
                 axios.get('/principle')
@@ -187,12 +192,14 @@ Principle.vue:
                         this.principles = response.data.principles;
                     });
             },
+
             initUpdate(index)
             {
                 this.errors = [];
                 $("#update_principle_model").modal("show");
                 this.update_principle = this.principles[index];
             },
+
             updatePrinciple()
             {
                 axios.patch('/principle/' + this.update_principle.id, {
@@ -212,9 +219,11 @@ Principle.vue:
                         }
                     });
             },
+
             _formatDateTime(date, format = 'MM/DD/YYYY hh:mm A') {
                 return date === null ? '' : moment(date).format(format);
             },
+
         }
     }
 

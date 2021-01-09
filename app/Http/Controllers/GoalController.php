@@ -56,8 +56,9 @@ class GoalController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\JsonResponse
+     * @throws \Illuminate\Validation\ValidationException
      */
     public function store(Request $request)
     {
@@ -113,7 +114,7 @@ class GoalController extends Controller
     public function update(Request $request, Goal $goal)
     {
         $this->validate($request, [
-            'name'        => 'required|max:256',
+            'name'        => 'required',
             'description' => 'required',
             'due_date' => 'date',
         ]);

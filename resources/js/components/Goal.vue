@@ -22,7 +22,7 @@ Goal.vue:
                                     <th>Updated</th>
                                     <th>Action</th>
                                 </tr>
-                                <goal-row v-for="(goal, index) in goals" :key="index" :goal="goal" :index="index" @remove="deleteGoal(index)"></goal-row>
+                                <goal-row v-for="(goal, index) in goals" :key="index" :goal="goal" :index="index" @remove="deleteGoal(index)" @update="initUpdate(index)"></goal-row>
                             </tbody>
                         </table>
                     </div>
@@ -104,107 +104,116 @@ Goal.vue:
 
             </div><!-- /.modal-dialog -->
 
-        </div><!-- /.modal -->
+        </div><!-- /.modal - end update goal -->
 
     </div>
 </template>
 
 <script>
-    import Datepicker from 'vuejs-datepicker';
 
-    export default {
-        name: 'goal',
-        components: {
-            Datepicker
-        },
-        data(){
-            return {
-                goal: {
-                    name: '',
-                    description: '',
-                    created_at: '',
-                    updated_at: '',
-                    due_date: ''
-                },
-                errors: [],
-                goals: [],
-                update_goal: {}
-            }
-        },
-        mounted()
-        {
-            this.readGoals();
-        },
-        methods: {
-            initAddGoal()
-            {
-                $("#add_goal_model").modal("show");
+import Datepicker from 'vuejs-datepicker';
+
+export default {
+    name: 'goal',
+    components: {
+        Datepicker
+    },
+    data(){
+        return {
+            goal: {
+                name: '',
+                description: '',
+                created_at: '',
+                updated_at: '',
+                due_date: ''
             },
-            createGoal()
-            {
-                axios.post('/goal', {
-                    name: this.goal.name,
-                    description: this.goal.description,
-                    due_date: this.goal.due_date === '' ? null : moment(this.goal.due_date).format('YYYY-MM-DD')
-                })
+            errors: [],
+            goals: [],
+            update_goal: {}
+        }
+    },
+    mounted()
+    {
+        this.readGoals();
+    },
+    methods: {
+
+        initAddGoal()
+        {
+            $("#add_goal_model").modal("show");
+        },
+
+        createGoal()
+        {
+            axios.post('/goal', {
+                name: this.goal.name,
+                description: this.goal.description,
+                due_date: this.goal.due_date === '' ? null : moment(this.goal.due_date).format('YYYY-MM-DD')
+            })
+            .then(response => {
+                this.reset();
+                this.goals.push(response.data.goals);
+                $("#add_goal_model").modal("hide");
+            })
+            .catch(error => {
+                this.errors = [];
+                if (error.response.data.errors && error.response.data.errors.name) {
+                    this.errors.push(error.response.data.errors.name[0]);
+                }
+                if (error.response.data.errors && error.response.data.errors.description)
+                {
+                    this.errors.push(error.response.data.errors.description[0]);
+                }
+            });
+        },
+
+        deleteGoal(index) {
+          this.goals.splice(index, 1);
+        },
+
+        reset()
+        {
+            this.goal.name = '';
+            this.goal.description = '';
+            this.goal.due_date = '';
+        },
+
+        readGoals()
+        {
+            axios.get('/goal')
                 .then(response => {
-                    this.reset();
-                    this.goals.push(response.data.goals);
-                    $("#add_goal_model").modal("hide");
+                    this.goals = response.data.goals;
+                });
+        },
+
+        initUpdate(index)
+        {
+            this.errors = [];
+            $("#update_goal_model").modal("show");
+            this.update_goal = this.goals[index];
+        },
+
+        updateGoal()
+        {
+            axios.patch('/goal/' + this.update_goal.id, {
+                name: this.update_goal.name,
+                description: this.update_goal.description,
+            })
+                .then(response => {
+                    $("#update_goal_model").modal("hide");
                 })
                 .catch(error => {
                     this.errors = [];
-                    if (error.response.data.errors && error.response.data.errors.name) {
+                    if (error.response.data.errors.name) {
                         this.errors.push(error.response.data.errors.name[0]);
                     }
-                    if (error.response.data.errors && error.response.data.errors.description)
-                    {
+                    if (error.response.data.errors.description) {
                         this.errors.push(error.response.data.errors.description[0]);
                     }
                 });
-            },
-            deleteGoal(index) {
-              this.goals.splice(index, 1);
-            },
-            reset()
-            {
-                this.goal.name = '';
-                this.goal.description = '';
-                this.goal.due_date = '';
-            },
-            readGoals()
-            {
-                axios.get('/goal')
-                    .then(response => {
-                        this.goals = response.data.goals;
-                    });
-            },
-            initUpdate(index)
-            {
-                this.errors = [];
-                $("#update_goal_model").modal("show");
-                this.update_goal = this.goals[index];
-            },
-            updateGoal()
-            {
-                axios.patch('/goal/' + this.update_goal.id, {
-                    name: this.update_goal.name,
-                    description: this.update_goal.description,
-                })
-                    .then(response => {
-                        $("#update_goal_model").modal("hide");
-                    })
-                    .catch(error => {
-                        this.errors = [];
-                        if (error.response.data.errors.name) {
-                            this.errors.push(error.response.data.errors.name[0]);
-                        }
-                        if (error.response.data.errors.description) {
-                            this.errors.push(error.response.data.errors.description[0]);
-                        }
-                    });
-            }
-        }
+        },
+
     }
+}
 
 </script>

@@ -6,14 +6,14 @@ GoalRow.vue:
         <td>{{ _formatDateTime(goal.due_date, 'MM/DD/YYYY') }}</td>
         <td>{{ _formatDateTime(goal.created_at) }}</td>
         <td>{{ _formatDateTime(goal.updated_at) }}</td>
-        <td><button @click="initUpdate(index)" class="btn btn-success btn-xs" style="padding:8px"><span class="glyphicon glyphicon-edit"></span></button>
+        <td><button @click="updateGoal(index)" class="btn btn-success btn-xs" style="padding:8px"><span class="glyphicon glyphicon-edit"></span></button>
             <button @click="deleteGoal(index)" class="btn btn-danger btn-xs" style="padding:8px"><span class="glyphicon glyphicon-trash"></span></button>
         </td>
     </tr>
 </template>
 
-
 <script>
+
 export default {
     name: 'goal-row',
     props: {
@@ -27,6 +27,7 @@ export default {
         }
     },
     methods: {
+
       deleteGoal () {
         let conf = confirm("Do you really want to delete this goal?");
         if (conf === true) {
@@ -38,6 +39,11 @@ export default {
           });
         }
       },
+
+      updateGoal() {
+          this.$emit('update');
+      },
+
       _formatDateTime(date, format = 'MM/DD/YYYY hh:mm A') {
         return date === null ? '' : moment(date).format(format);
       },

@@ -110,7 +110,7 @@ class PrincipleController extends Controller
     public function update(Request $request, Principle $principle)
     {
         $this->validate($request, [
-            'name'        => 'required|max:256',
+            'name'        => 'required',
             'description' => 'required'
         ]);
 

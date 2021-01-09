@@ -199,18 +199,18 @@ Mission.vue:
                     name: this.update_mission.name,
                     description: this.update_mission.description,
                 })
-                    .then(response => {
-                        $("#update_mission_model").modal("hide");
-                    })
-                    .catch(error => {
-                        this.errors = [];
-                        if (error.response.data.errors.name) {
-                            this.errors.push(error.response.data.errors.name[0]);
-                        }
-                        if (error.response.data.errors.description) {
-                            this.errors.push(error.response.data.errors.description[0]);
-                        }
-                    });
+                .then(response => {
+                    $("#update_mission_model").modal("hide");
+                })
+                .catch(error => {
+                    this.errors = [];
+                    if (error.response.data.errors.name) {
+                        this.errors.push(error.response.data.errors.name[0]);
+                    }
+                    if (error.response.data.errors.description) {
+                        this.errors.push(error.response.data.errors.description[0]);
+                    }
+                });
             },
             _formatDateTime(date, format = "MM/DD/YYYY hh:mm A") {
                 return date === null ? '' : moment(date).format(format);

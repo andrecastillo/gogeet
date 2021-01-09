@@ -111,15 +111,13 @@ class MissionController extends Controller
     public function update(Request $request, Mission $mission)
     {
         $this->validate($request, [
-            'name'        => 'required|max:256',
+            'name'        => 'required',
             'description' => 'required'
         ]);
 
         $mission->name = request('name');
 
         $mission->description = request('description');
-
-        $mision->due_date = request('due_date');
 
         $mission->save();
 
