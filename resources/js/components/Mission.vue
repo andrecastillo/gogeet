@@ -117,6 +117,7 @@ Mission.vue:
                             <label for="update_due_date">Due Date:</label>
                             <datepicker name="update_due_date" id="update_due_date" placeholder="Due Date" v-model="update_mission.due_date" :format="date_format"></datepicker>
                         </div>
+
                     </div>
 
                     <div class="modal-footer">

@@ -18,6 +18,7 @@ Task.vue:
                                 <th>No.</th>
                                 <th>Name</th>
                                 <th>Description</th>
+                                <th>Due Date</th>
                                 <th>Created</th>
                                 <th>Updated</th>
                                 <th>Action</th>
@@ -26,8 +27,9 @@ Task.vue:
                                 <td>{{ index + 1 }}</td>
                                 <td>{{ task.name }}</td>
                                 <td>{{ task.description }}</td>
-                                <td>{{ _formatDateTime(task.created_at) }}</td>
-                                <td>{{ _formatDateTime(task.updated_at) }}</td>
+                                <td>{{ _formatDateTime(task.due_date, 'MM/DD/YYYY') }}</td>
+                                <td>{{ _formatDateTime(task.created_at, 'MM/DD/YYYY hh:mm A') }}</td>
+                                <td>{{ _formatDateTime(task.updated_at, 'MM/DD/YYYY hh:mm A') }}</td>
                                 <td><button @click="initUpdate(index)" class="btn btn-success btn-xs" style="padding:8px"><span class="glyphicon glyphicon-edit"></span></button>
                                     <button @click="deleteTask(index)" class="btn btn-danger btn-xs" style="padding:8px"><span class="glyphicon glyphicon-trash"></span></button>
                                 </td>
@@ -39,6 +41,7 @@ Task.vue:
             </div>
         </div>
 
+        <!-- add task modal -->
         <div class="modal fade" tabindex="-1" role="dialog" id="add_task_model">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
@@ -55,14 +58,22 @@ Task.vue:
                             </ul>
                         </div>
                         <div class="form-group">
-                            <label for="names">Name:</label>
+                            <label for="name">Name:</label>
                             <input type="text" name="name" id="name" placeholder="Task Name" class="form-control" v-model="task.name">
                         </div>
                         <div class="form-group">
                             <label for="description">Description:</label>
                             <textarea name="description" id="description" cols="30" rows="5" class="form-control" placeholder="Task Description" v-model="task.description"></textarea>
                         </div>
+
+                        <div class="form-group">
+                            <label for="due_date">Due Date:</label>
+                        <datepicker name="due_date" id="due_date" placeholder="Due Date" v-model="task.due_date" :format="date_format"></datepicker>
+
                     </div>
+
+                    </div>
+
 
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -98,6 +109,12 @@ Task.vue:
                             <textarea cols="30" rows="5" class="form-control"
                                       placeholder="Task Description" v-model="update_task.description"></textarea>
                         </div>
+
+                        <div class="form-group">
+                            <label for="update_due_date">Due Date:</label>
+                            <datepicker name="update_due_date" id="update_due_date" placeholder="Due Date" v-model="update_task.due_date" :format="date_format"></datepicker>
+                        </div>
+
                     </div>
 
                     <div class="modal-footer">
@@ -115,107 +132,125 @@ Task.vue:
 </template>
 
 <script>
+import Datepicker from 'vuejs-datepicker';
 
-    export default {
-        name: 'task',
-        data(){
-            return {
-                task: {
-                    name: '',
-                    description: '',
-                    created_at: '',
-                    updated_at: ''
-                },
-                errors: [],
-                tasks: [],
-                update_task: {}
+export default {
+    name: 'task',
+    components: {
+      Datepicker
+    },
+    data(){
+        return {
+            date_format: "MM/dd/yyyy",
+            task: {
+                name: '',
+                description: '',
+                created_at: '',
+                updated_at: ''
+            },
+            errors: [],
+            tasks: [],
+            update_task: {}
+        }
+    },
+
+    mounted()
+    {
+        this.readTasks();
+    },
+
+    methods: {
+
+        readTasks()
+        {
+            axios.get('/task')
+                .then(response => {
+                    this.tasks = response.data.tasks;
+                });
+        },
+
+        initAddTask()
+        {
+            $("#add_task_model").modal("show");
+        },
+
+        createTask()
+        {
+            axios.post('/task', {
+                name: this.task.name,
+                description: this.task.description,
+                due_date: this.task.due_date === '' ? null : moment(this.task.due_date).format('YYYY-MM-DD')
+            })
+            .then(response => {
+                this.reset();
+                this.tasks.push(response.data.tasks);
+                $("#add_task_model").modal("hide");
+            })
+            .catch(error => {
+                this.errors = [];
+                if (error.response.data.errors && error.response.data.errors.name) {
+                    this.errors.push(error.response.data.errors.name[0]);
+                }
+                if (error.response.data.errors && error.response.data.errors.description)
+                {
+                    this.errors.push(error.response.data.errors.description[0]);
+                }
+            });
+        },
+
+        reset()
+        {
+            this.task.name = '';
+            this.task.description = '';
+            this.task.due_date = '';
+        },
+
+        initUpdate(index)
+        {
+            this.errors = [];
+            $("#update_task_model").modal("show");
+            this.update_task = this.tasks[index];
+            this.update_task.due_date = this.update_task.due_date === null ? null : moment(this.update_task.due_date).format('MM/DD/YYYY');
+        },
+
+        updateTask()
+        {
+            axios.patch('/task/' + this.update_task.id, {
+                name: this.update_task.name,
+                description: this.update_task.description,
+                due_date: this.update_task.due_date === null || '' ? null : moment(this.update_task.due_date).format("YYYY-MM-DD")
+            })
+                .then(response => {
+                    $("#update_task_model").modal("hide");
+                })
+                .catch(error => {
+                    this.errors = [];
+                    if (error.response.data.errors.name) {
+                        this.errors.push(error.response.data.errors.name[0]);
+                    }
+                    if (error.response.data.errors.description) {
+                        this.errors.push(error.response.data.errors.description[0]);
+                    }
+                });
+        },
+
+        deleteTask(index)
+        {
+            let conf = confirm("Do you ready want to delete this task?");
+            if (conf === true) {
+                axios.delete('/task/' + this.tasks[index].id)
+                    .then(response => {
+                        this.tasks.splice(index, 1);
+                    })
+                    .catch(error => {
+                    });
             }
         },
 
-        mounted()
-        {
-            this.readTasks();
+        _formatDateTime(date, format = "MM/DD/YYYY") {
+            return date === null ? '' : moment(date).format(format);
         },
-        methods: {
-            deleteTask(index)
-            {
-                let conf = confirm("Do you ready want to delete this task?");
-                if (conf === true) {
-                    axios.delete('/task/' + this.tasks[index].id)
-                        .then(response => {
-                            this.tasks.splice(index, 1);
-                        })
-                        .catch(error => {
-                        });
-                }
-            },
-            initAddTask()
-            {
-                $("#add_task_model").modal("show");
-            },
-            createTask()
-            {
-                axios.post('/task', {
-                    name: this.task.name,
-                    description: this.task.description,
-                })
-                    .then(response => {
-                        this.reset();
-                        this.tasks.push(response.data.tasks);
-                        $("#add_task_model").modal("hide");
-                    })
-                    .catch(error => {
-                        this.errors = [];
-                        if (error.response.data.errors && error.response.data.errors.name) {
-                            this.errors.push(error.response.data.errors.name[0]);
-                        }
-                        if (error.response.data.errors && error.response.data.errors.description)
-                        {
-                            this.errors.push(error.response.data.errors.description[0]);
-                        }
-                    });
-            },
-            reset()
-            {
-                this.task.name = '';
-                this.task.description = '';
-            },
-            readTasks()
-            {
-                axios.get('/task')
-                    .then(response => {
-                        this.tasks = response.data.tasks;
-                    });
-            },
-            initUpdate(index)
-            {
-                this.errors = [];
-                $("#update_task_model").modal("show");
-                this.update_task = this.tasks[index];
-            },
-            updateTask()
-            {
-                axios.patch('/task/' + this.update_task.id, {
-                    name: this.update_task.name,
-                    description: this.update_task.description,
-                })
-                    .then(response => {
-                        $("#update_task_model").modal("hide");
-                    })
-                    .catch(error => {
-                        this.errors = [];
-                        if (error.response.data.errors.name) {
-                            this.errors.push(error.response.data.errors.name[0]);
-                        }
-                        if (error.response.data.errors.description) {
-                            this.errors.push(error.response.data.errors.description[0]);
-                        }
-                    });
-            },
-            _formatDateTime(date, format = "MM/DD/YYYY hh:mm A") {
-                return date === null ? '' : moment(date).format(format);
-            },
-        }
     }
+}
 
 </script>

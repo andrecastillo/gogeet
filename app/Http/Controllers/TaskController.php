@@ -69,7 +69,8 @@ class TaskController extends Controller
         $task = Task::create([
             'name' => request('name'),
             'description' => request('description'),
-            'user_id' => Auth::user()->id
+            'user_id' => Auth::user()->id,
+            'due_date' => request('due_date')
         ]);
 
         return response()->json([
@@ -112,12 +113,12 @@ class TaskController extends Controller
         $this->validate($request, [
             'name'        => 'required|max:256',
             'description' => 'required',
+            'due_date' => 'nullable|date'
         ]);
 
         $task->name = request('name');
-
         $task->description = request('description');
-
+        $task->due_date = request('due_date');
         $task->save();
 
         return response()->json([
