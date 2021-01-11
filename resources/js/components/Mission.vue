@@ -28,8 +28,8 @@ Mission.vue:
                                 <td>{{ mission.name }}</td>
                                 <td>{{ mission.description }}</td>
                                 <td>{{ _formatDateTime(mission.due_date, 'MM/DD/YYYY') }}</td>
-                                <td>{{ _formatDateTime(mission.created_at) }}</td>
-                                <td>{{ _formatDateTime(mission.updated_at) }}</td>
+                                <td>{{ _formatDateTime(mission.created_at, 'MM/DD/YYYY hh:mm A') }}</td>
+                                <td>{{ _formatDateTime(mission.updated_at, 'MM/DD/YYYY hh:mm A') }}</td>
                                 <td><button @click="initUpdate(index)" class="btn btn-success btn-xs" style="padding:8px"><span class="glyphicon glyphicon-edit"></span></button>
                                     <button @click="deleteMission(index)" class="btn btn-danger btn-xs" style="padding:8px"><span class="glyphicon glyphicon-trash"></span></button>
                                 </td>
@@ -41,9 +41,11 @@ Mission.vue:
             </div>
         </div>
 
+        <!-- add mission modal -->
         <div class="modal fade" tabindex="-1" role="dialog" id="add_mission_model">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
+
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                             aria-hidden="true">&times;</span></button>
@@ -51,23 +53,28 @@ Mission.vue:
                     </div>
 
                     <div class="modal-body">
+
                         <div class="alert alert-danger" v-if="errors.length > 0">
                             <ul>
                                 <li v-for="error in errors">{{ error }}</li>
                             </ul>
                         </div>
+
                         <div class="form-group">
                             <label for="name">Name:</label>
                             <input type="text" name="name" id="name" placeholder="Mission Name" class="form-control" v-model="mission.name">
                         </div>
+
                         <div class="form-group">
                             <label for="description">Description:</label>
                             <textarea name="description" id="description" cols="30" rows="5" class="form-control" placeholder="Mission Description" v-model="mission.description"></textarea>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="due_date">Due Date:</label>
-                        <datepicker name="due_date" id="due_date" placeholder="Due Date" v-model="mission.due_date"></datepicker>
+
+                         <div class="form-group">
+                            <label for="due_date">Due Date:</label>
+                            <datepicker name="due_date" id="due_date" placeholder="Due Date" v-model="mission.due_date" :format="date_format"></datepicker>
+                        </div>
+
                     </div>
 
                     <div class="modal-footer">
@@ -76,8 +83,9 @@ Mission.vue:
                     </div>
                 </div><!-- /.modal-content -->
             </div><!-- /.modal-dialog -->
-        </div><!-- /.modal -->
+        </div><!-- /.modal - end add mission -->
 
+        <!-- update mission modal -->
         <div class="modal fade" tabindex="-1" role="dialog" id="update_mission_model">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
@@ -104,6 +112,11 @@ Mission.vue:
                             <textarea cols="30" rows="5" class="form-control"
                                       placeholder="Mission Description" v-model="update_mission.description"></textarea>
                         </div>
+
+                        <div class="form-group">
+                            <label for="update_due_date">Due Date:</label>
+                            <datepicker name="update_due_date" id="update_due_date" placeholder="Due Date" v-model="update_mission.due_date" :format="date_format"></datepicker>
+                        </div>
                     </div>
 
                     <div class="modal-footer">
@@ -115,7 +128,7 @@ Mission.vue:
 
             </div><!-- /.modal-dialog -->
 
-        </div><!-- /.modal -->
+        </div><!-- /.modal - end update mission modal -->
 
     </div>
 </template>
@@ -131,6 +144,7 @@ export default {
     },
     data(){
         return {
+            date_format: "MM/dd/yyyy",
             mission: {
                 name: '',
                 description: '',
@@ -150,17 +164,12 @@ export default {
     },
     methods: {
 
-        deleteMission(index)
+        readMissions()
         {
-            let conf = confirm("Do you ready want to delete this mission?");
-            if (conf === true) {
-                axios.delete('/mission/' + this.missions[index].id)
-                    .then(response => {
-                        this.missions.splice(index, 1);
-                    })
-                    .catch(error => {
-                    });
-            }
+            axios.get('/mission')
+                .then(response => {
+                    this.missions = response.data.missions;
+                });
         },
 
         initAddMission()
@@ -175,21 +184,21 @@ export default {
                 description: this.mission.description,
                 due_date: this.mission.due_date === '' ? null : moment(this.mission.due_date).format('YYYY-MM-DD')
             })
-                .then(response => {
-                    this.reset();
-                    this.missions.push(response.data.missions);
-                    $("#add_mission_model").modal("hide");
-                })
-                .catch(error => {
-                    this.errors = [];
-                    if (error.response.data.errors && error.response.data.errors.name) {
-                        this.errors.push(error.response.data.errors.name[0]);
-                    }
-                    if (error.response.data.errors && error.response.data.errors.description)
-                    {
-                        this.errors.push(error.response.data.errors.description[0]);
-                    }
-                });
+            .then(response => {
+                this.reset();
+                this.missions.push(response.data.missions);
+                $("#add_mission_model").modal("hide");
+            })
+            .catch(error => {
+                this.errors = [];
+                if (error.response.data.errors && error.response.data.errors.name) {
+                    this.errors.push(error.response.data.errors.name[0]);
+                }
+                if (error.response.data.errors && error.response.data.errors.description)
+                {
+                    this.errors.push(error.response.data.errors.description[0]);
+                }
+            });
         },
 
         reset()
@@ -199,19 +208,12 @@ export default {
             this.mission.due_date = '';
         },
 
-        readMissions()
-        {
-            axios.get('/mission')
-                .then(response => {
-                    this.missions = response.data.missions;
-                });
-        },
-
         initUpdate(index)
         {
             this.errors = [];
             $("#update_mission_model").modal("show");
             this.update_mission = this.missions[index];
+            this.update_mission.due_date = this.update_mission.due_date === null ? null : moment(this.update_mission.due_date).format('MM/DD/YYYY');
         },
 
         updateMission()
@@ -219,6 +221,7 @@ export default {
             axios.patch('/mission/' + this.update_mission.id, {
                 name: this.update_mission.name,
                 description: this.update_mission.description,
+                due_date: this.update_mission.due_date === null || '' ? null : moment(this.update_mission.due_date).format("YYYY-MM-DD")
             })
             .then(response => {
                 $("#update_mission_model").modal("hide");
@@ -234,7 +237,20 @@ export default {
             });
         },
 
-        _formatDateTime(date, format = "MM/DD/YYYY hh:mm A") {
+        deleteMission(index)
+        {
+            let conf = confirm("Do you ready want to delete this mission?");
+            if (conf === true) {
+                axios.delete('/mission/' + this.missions[index].id)
+                    .then(response => {
+                        this.missions.splice(index, 1);
+                    })
+                    .catch(error => {
+                    });
+            }
+        },
+
+        _formatDateTime(date, format = "MM/DD/YYYY") {
             return date === null ? '' : moment(date).format(format);
         },
 

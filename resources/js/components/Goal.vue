@@ -67,6 +67,7 @@ Goal.vue:
             </div><!-- /.modal-dialog -->
         </div><!-- /.modal -->
 
+        <!-- update goal modal -->
         <div class="modal fade" tabindex="-1" role="dialog" id="update_goal_model">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
@@ -92,6 +93,11 @@ Goal.vue:
                             <label for="description">Description:</label>
                             <textarea cols="30" rows="5" class="form-control"
                                       placeholder="Goal Description" v-model="update_goal.description"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="update_due_date">Due Date:</label>
+                            <datepicker name="update_due_date" id="update_due_date" placeholder="Due Date" v-model="update_goal.due_date" :format="date_format"></datepicker>
                         </div>
                     </div>
 
@@ -120,6 +126,7 @@ export default {
     },
     data(){
         return {
+            date_format: "MM/dd/yyyy",
             goal: {
                 name: '',
                 description: '',
@@ -137,6 +144,14 @@ export default {
         this.readGoals();
     },
     methods: {
+
+        readGoals()
+        {
+            axios.get('/goal')
+                .then(response => {
+                    this.goals = response.data.goals;
+                });
+        },
 
         initAddGoal()
         {
@@ -167,9 +182,6 @@ export default {
             });
         },
 
-        deleteGoal(index) {
-          this.goals.splice(index, 1);
-        },
 
         reset()
         {
@@ -178,19 +190,12 @@ export default {
             this.goal.due_date = '';
         },
 
-        readGoals()
-        {
-            axios.get('/goal')
-                .then(response => {
-                    this.goals = response.data.goals;
-                });
-        },
-
         initUpdate(index)
         {
             this.errors = [];
             $("#update_goal_model").modal("show");
             this.update_goal = this.goals[index];
+            this.update_goal.due_date = this.update_goal.due_date === null ? null : moment(this.update_goal.due_date).format('MM/DD/YYYY');
         },
 
         updateGoal()
@@ -198,6 +203,7 @@ export default {
             axios.patch('/goal/' + this.update_goal.id, {
                 name: this.update_goal.name,
                 description: this.update_goal.description,
+                due_date: this.update_goal.due_date === null || '' ? null : moment(this.update_goal.due_date).format("YYYY-MM-DD")
             })
                 .then(response => {
                     $("#update_goal_model").modal("hide");
@@ -212,6 +218,11 @@ export default {
                     }
                 });
         },
+
+        deleteGoal(index) {
+          this.goals.splice(index, 1);
+        },
+
 
     }
 }
