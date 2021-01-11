@@ -55,7 +55,7 @@ Goal.vue:
                         </div>
                         <div class="form-group">
                             <label for="due_date">Due Date:</label>
-                            <datepicker name="due_date" id="due_date" placeholder="Due Date" v-model="goal.due_date"></datepicker>
+                            <datepicker name="due_date" id="due_date" placeholder="Due Date" v-model="goal.due_date" :format="date_format" :clear-button="clear_button"></datepicker>
                         </div>
                     </div>
 
@@ -97,7 +97,7 @@ Goal.vue:
 
                         <div class="form-group">
                             <label for="update_due_date">Due Date:</label>
-                            <datepicker name="update_due_date" id="update_due_date" placeholder="Due Date" v-model="update_goal.due_date" :format="date_format"></datepicker>
+                            <datepicker name="update_due_date" id="update_due_date" placeholder="Due Date" v-model="update_goal.due_date" :format="date_format" :clear-button="clear_button"></datepicker>
                         </div>
                     </div>
 
@@ -127,6 +127,7 @@ export default {
     data(){
         return {
             date_format: "MM/dd/yyyy",
+            clear_button: true,
             goal: {
                 name: '',
                 description: '',
@@ -163,7 +164,7 @@ export default {
             axios.post('/goal', {
                 name: this.goal.name,
                 description: this.goal.description,
-                due_date: this.goal.due_date === '' ? null : moment(this.goal.due_date).format('YYYY-MM-DD')
+                due_date: this.goal.due_date === null || '' ? null : moment(this.goal.due_date).format('YYYY-MM-DD')
             })
             .then(response => {
                 this.reset();

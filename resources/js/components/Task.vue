@@ -68,7 +68,7 @@ Task.vue:
 
                         <div class="form-group">
                             <label for="due_date">Due Date:</label>
-                        <datepicker name="due_date" id="due_date" placeholder="Due Date" v-model="task.due_date" :format="date_format"></datepicker>
+                        <datepicker name="due_date" id="due_date" placeholder="Due Date" v-model="task.due_date" :format="date_format" :clear-button="clear_button"></datepicker>
 
                     </div>
 
@@ -112,7 +112,7 @@ Task.vue:
 
                         <div class="form-group">
                             <label for="update_due_date">Due Date:</label>
-                            <datepicker name="update_due_date" id="update_due_date" placeholder="Due Date" v-model="update_task.due_date" :format="date_format"></datepicker>
+                            <datepicker name="update_due_date" id="update_due_date" placeholder="Due Date" v-model="update_task.due_date" :format="date_format" :clear-button="clear_button"></datepicker>
                         </div>
 
                     </div>
@@ -142,6 +142,7 @@ export default {
     data(){
         return {
             date_format: "MM/dd/yyyy",
+            clear_button: true,
             task: {
                 name: '',
                 description: '',
@@ -179,7 +180,7 @@ export default {
             axios.post('/task', {
                 name: this.task.name,
                 description: this.task.description,
-                due_date: this.task.due_date === '' ? null : moment(this.task.due_date).format('YYYY-MM-DD')
+                due_date: this.task.due_date === null || '' ? null : moment(this.task.due_date).format('YYYY-MM-DD')
             })
             .then(response => {
                 this.reset();

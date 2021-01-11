@@ -70,11 +70,10 @@ Mission.vue:
                             <textarea name="description" id="description" cols="30" rows="5" class="form-control" placeholder="Mission Description" v-model="mission.description"></textarea>
                         </div>
 
-                         <div class="form-group">
+                        <div class="form-group force-inline">
                             <label for="due_date">Due Date:</label>
-                            <datepicker name="due_date" id="due_date" placeholder="Due Date" v-model="mission.due_date" :format="date_format"></datepicker>
+                            <datepicker name="due_date" id="due_date" placeholder="Due Date" v-model="mission.due_date" :format="date_format" :clear-button="clear_button"></datepicker>
                         </div>
-
                     </div>
 
                     <div class="modal-footer">
@@ -115,7 +114,7 @@ Mission.vue:
 
                         <div class="form-group">
                             <label for="update_due_date">Due Date:</label>
-                            <datepicker name="update_due_date" id="update_due_date" placeholder="Due Date" v-model="update_mission.due_date" :format="date_format"></datepicker>
+                            <datepicker name="update_due_date" id="update_due_date" placeholder="Due Date" v-model="update_mission.due_date" :format="date_format" :clear-button="clear_button"></datepicker>
                         </div>
 
                     </div>
@@ -146,6 +145,7 @@ export default {
     data(){
         return {
             date_format: "MM/dd/yyyy",
+            clear_button: true,
             mission: {
                 name: '',
                 description: '',
@@ -183,7 +183,7 @@ export default {
             axios.post('/mission', {
                 name: this.mission.name,
                 description: this.mission.description,
-                due_date: this.mission.due_date === '' ? null : moment(this.mission.due_date).format('YYYY-MM-DD')
+                due_date: this.mission.due_date === null || '' ? null : moment(this.mission.due_date).format('YYYY-MM-DD')
             })
             .then(response => {
                 this.reset();
