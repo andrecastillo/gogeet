@@ -6,3 +6,16 @@ go into laradock directory and run:
 
 `docker-compose up nginx mariadb
 `
+Then 
+
+`docker-compose exec workspace bash`
+
+To jump into the container, and then 
+
+`npm install`
+
+and
+
+`php artisan migrate`
+
+That should do it.
