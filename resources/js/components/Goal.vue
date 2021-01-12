@@ -5,7 +5,6 @@ Goal.vue:
             <div class="col-md-12">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <h3><span class="glyphicon glyphicon-dashboard"></span> Goals </h3>
                         <button @click="initAddGoal()" class="btn btn-success " style="padding:5px">
                             Add New Goal
                         </button>

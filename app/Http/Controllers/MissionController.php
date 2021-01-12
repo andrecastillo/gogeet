@@ -25,7 +25,7 @@ class MissionController extends Controller
      */
     public function home()
     {
-        return view('missions');
+        return view('missions')->with('title', 'Missions');
     }
 
     /**

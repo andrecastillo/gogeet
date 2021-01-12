@@ -5,7 +5,6 @@ Task.vue:
             <div class="col-md-12">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <h3><span class="glyphicon glyphicon-dashboard"></span> Tasks </h3>
                         <button @click="initAddTask()" class="btn btn-success " style="padding:5px">
                             Add New Task
                         </button>

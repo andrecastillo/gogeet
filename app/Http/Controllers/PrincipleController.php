@@ -25,7 +25,7 @@ class PrincipleController extends Controller
      */
     public function home()
     {
-        return view('principles');
+        return view('principles')->with('title', 'Principles');
     }
 
     /**

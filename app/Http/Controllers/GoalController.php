@@ -25,7 +25,7 @@ class GoalController extends Controller
      */
     public function home()
     {
-        return view('goals');
+        return view('goals')->with('title', 'Goals');
     }
 
     /**

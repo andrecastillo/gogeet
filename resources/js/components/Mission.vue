@@ -5,7 +5,6 @@ Mission.vue:
             <div class="col-md-12">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <h3><span class="glyphicon glyphicon-dashboard"></span> Missions </h3>
                         <button @click="initAddMission()" class="btn btn-success " style="padding:5px">
                             Add New Mission
                         </button>

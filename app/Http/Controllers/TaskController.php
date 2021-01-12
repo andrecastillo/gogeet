@@ -25,7 +25,7 @@ class TaskController extends Controller
      */
     public function home()
     {
-        return view('tasks');
+        return view('tasks')->with('title', 'Tasks');
     }
 
     /**

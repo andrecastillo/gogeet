@@ -5,7 +5,6 @@ Principle.vue:
             <div class="col-md-12">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <h3><span class="glyphicon glyphicon-dashboard"></span> Principles </h3>
                         <button @click="initAddPrinciple()" class="btn btn-success " style="padding:5px">
                             Add New Principle
                         </button>

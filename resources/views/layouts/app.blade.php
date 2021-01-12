@@ -32,7 +32,7 @@
                 <!-- main content -->
                 <main class="col-md-9 ml-sm-auto col-lg-11 px-md-4 h-100">
                     <!-- top bar -->
-                    @include('partials.topnav')
+                    @include('partials.topbar')
 
                     <!-- main content -->
                     @yield('content')

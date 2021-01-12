@@ -1,11 +1,11 @@
 <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
     <div class="container-fluid">
 
+        <h3>{{ $title }}</h3>
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
 
-
-            <!-- Right Side Of Navbar -->
+            <!-- Right Side Of topbar -->
             <ul class="navbar-nav ml-auto">
                 <!-- Authentication Links -->
                 @guest
