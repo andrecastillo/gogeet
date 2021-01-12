@@ -163,7 +163,8 @@ export default {
 
         initAddGoal()
         {
-            $("#add_goal_model").modal("show");
+          this.errors = [];
+          $("#add_goal_model").modal("show");
         },
 
         createGoal()

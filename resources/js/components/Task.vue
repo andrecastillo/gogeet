@@ -172,6 +172,7 @@ export default {
 
         initAddTask()
         {
+            this.errors = [];
             $("#add_task_model").modal("show");
         },
 

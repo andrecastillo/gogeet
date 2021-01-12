@@ -170,6 +170,7 @@ export default {
 
         initAddMission()
         {
+            this.errors = [];
             $("#add_mission_model").modal("show");
         },
 

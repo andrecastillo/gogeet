@@ -147,7 +147,8 @@ Principle.vue:
 
             initAddPrinciple()
             {
-                $("#add_principle_model").modal("show");
+              this.errors = [];
+              $("#add_principle_model").modal("show");
             },
 
             createPrinciple()
