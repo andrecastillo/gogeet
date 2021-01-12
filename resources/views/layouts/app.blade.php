@@ -21,19 +21,20 @@
 </head>
 
 <body>
-    <div id="app">
-        <!-- topnav -->
-        @include('partials.topnav')
-        <!-- /topnav -->
+    <div id="app" class="container-fluid h-100">
 
-        <div class="container-fluid">
-            <div class="row pt-3">
+        <div class="container-fluid h-100">
+            <div class="row pt-3 h-100">
                 <!-- sidebar -->
                 @include('partials.sidebar')
                 <!-- /sidebar -->
 
                 <!-- main content -->
-                <main class="col-md-9 ml-sm-auto col-lg-11 px-md-4">
+                <main class="col-md-9 ml-sm-auto col-lg-11 px-md-4 h-100">
+                    <!-- top bar -->
+                    @include('partials.topnav')
+
+                    <!-- main content -->
                     @yield('content')
                 </main>
                 <!-- /main content -->

@@ -1,10 +1,18 @@
 <nav id="sidebarMenu" class="col-md-3 col-lg-1 d-md-block bg-light sidebar collapse">
     @auth
+
+    <!-- Top Of navbar -->
+    <a class="navbar-brand" href="{{ url('/tasks') }}">
+        {{ config('app.name', 'goGeet') }}
+    </a>
+
+    <!-- navigation -->
     <ul class="navbar-nav mr-auto">
         <li><a href="{{ route('principles.home') }}">Principles</a></li>
         <li><a href="{{ route('missions.home') }}">Missions</a></li>
         <li><a href="{{ route('goals.home') }}">Goals</a></li>
-        <li><a href="{{ route('tasks.index') }}">My Tasks</a></li>
+        <li><a href="{{ route('tasks.index') }}">Tasks</a></li>
     </ul>
     @endauth
+
 </nav>

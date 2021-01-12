@@ -10,6 +10,10 @@
 // Partials
 @import 'partials/sidebar';
 
+html, body {
+    height: 100%;
+}
+
 .table th,
 .table td {
     padding: 0.15rem;
@@ -38,4 +42,6 @@ ol, ul, dl {
     padding: 0;
 }
 
-
+.navbar-brand {
+    color: rgba(0, 0, 0, 0.9);
+}
