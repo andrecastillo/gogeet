@@ -9,3 +9,22 @@
 
 // Partials
 @import 'partials/sidebar';
+
+.table th,
+.table td {
+    padding: 0.15rem;
+    vertical-align: top;
+    border-top: 1px solid;
+    border-bottom: 1px solid;
+}
+
+h3,
+.h3 {
+    font-size: 1.575rem;
+    display: inline;
+    vertical-align: bottom;
+}
+
+.panel-heading {
+    margin: 5px 5px 5px 0px;
+}

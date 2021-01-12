@@ -5,14 +5,14 @@ Task.vue:
             <div class="col-md-12">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <h3><span class="glyphicon glyphicon-dashboard"></span> Tasks </h3> <br>
+                        <h3><span class="glyphicon glyphicon-dashboard"></span> Tasks </h3>
                         <button @click="initAddTask()" class="btn btn-success " style="padding:5px">
                             Add New Task
                         </button>
                     </div>
 
                     <div class="panel-body">
-                        <table class="table table-bordered table-striped table-responsive" v-if="tasks.length > 0">
+                        <table class="table table-striped table-responsive-lg" v-if="tasks.length > 0">
                             <tbody>
                             <tr>
                                 <th>No.</th>
@@ -180,7 +180,7 @@ export default {
             axios.post('/task', {
                 name: this.task.name,
                 description: this.task.description,
-                due_date: this.task.due_date === null || '' ? null : moment(this.task.due_date).format('YYYY-MM-DD')
+                due_date: this.task.due_date === null || this.task.due_date === '' ? null : moment(this.task.due_date).format('YYYY-MM-DD')
             })
             .then(response => {
                 this.reset();

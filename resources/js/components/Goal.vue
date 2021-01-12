@@ -5,24 +5,29 @@ Goal.vue:
             <div class="col-md-12">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <h3><span class="glyphicon glyphicon-dashboard"></span> Goals </h3> <br>
+                        <h3><span class="glyphicon glyphicon-dashboard"></span> Goals </h3>
                         <button @click="initAddGoal()" class="btn btn-success " style="padding:5px">
                             Add New Goal
                         </button>
                     </div>
 
                     <div class="panel-body">
-                        <table class="table table-bordered table-striped table-responsive" v-if="goals.length > 0">
+                        <table class="table table-striped table-responsive-lg" v-if="goals.length > 0">
                             <tbody>
                                 <tr>
+                                    <th>No.</th>
                                     <th>Name</th>
-                                    <th>Description</th>
                                     <th>Due Date</th>
-                                    <th>Created</th>
-                                    <th>Updated</th>
                                     <th>Action</th>
                                 </tr>
-                                <goal-row v-for="(goal, index) in goals" :key="index" :goal="goal" :index="index" @remove="deleteGoal(index)" @update="initUpdate(index)"></goal-row>
+                                <tr v-for="(goal, index) in goals">
+                                    <td>{{ index + 1 }}</td>
+                                    <td>{{ goal.name }}</td>
+                                    <td>{{ _formatDateTime(goal.due_date, 'MM/DD/YYYY') }}</td>
+                                    <td><button @click="initUpdate(index)" class="btn btn-success btn-xs" style="padding:8px"><span class="glyphicon glyphicon-edit"></span></button>
+                                        <button @click="deleteGoal(index)" class="btn btn-danger btn-xs" style="padding:8px"><span class="glyphicon glyphicon-trash"></span></button>
+                                    </td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
@@ -140,10 +145,12 @@ export default {
             update_goal: {}
         }
     },
+
     mounted()
     {
         this.readGoals();
     },
+
     methods: {
 
         readGoals()
@@ -164,7 +171,7 @@ export default {
             axios.post('/goal', {
                 name: this.goal.name,
                 description: this.goal.description,
-                due_date: this.goal.due_date === null || '' ? null : moment(this.goal.due_date).format('YYYY-MM-DD')
+                due_date: this.goal.due_date === null || this.goal.due_date === '' ? null : moment(this.goal.due_date).format('YYYY-MM-DD')
             })
             .then(response => {
                 this.reset();
@@ -182,7 +189,6 @@ export default {
                 }
             });
         },
-
 
         reset()
         {
@@ -204,26 +210,37 @@ export default {
             axios.patch('/goal/' + this.update_goal.id, {
                 name: this.update_goal.name,
                 description: this.update_goal.description,
-                due_date: this.update_goal.due_date === null || '' ? null : moment(this.update_goal.due_date).format("YYYY-MM-DD")
+                due_date: this.update_goal.due_date === null || this.update_goal.due_date === '' ? null : moment(this.update_goal.due_date).format("YYYY-MM-DD")
             })
-                .then(response => {
-                    $("#update_goal_model").modal("hide");
-                })
-                .catch(error => {
-                    this.errors = [];
-                    if (error.response.data.errors.name) {
-                        this.errors.push(error.response.data.errors.name[0]);
-                    }
-                    if (error.response.data.errors.description) {
-                        this.errors.push(error.response.data.errors.description[0]);
-                    }
-                });
+            .then(response => {
+                $("#update_goal_model").modal("hide");
+            })
+            .catch(error => {
+                this.errors = [];
+                if (error.response.data.errors.name) {
+                    this.errors.push(error.response.data.errors.name[0]);
+                }
+                if (error.response.data.errors.description) {
+                    this.errors.push(error.response.data.errors.description[0]);
+                }
+            });
         },
 
-        deleteGoal(index) {
-          this.goals.splice(index, 1);
+        deleteGoal (index) {
+          let conf = confirm("Do you really want to delete this goal?");
+          if (conf === true) {
+            axios.delete('/goal/' + this.goals[index].id)
+              .then(response => {
+                this.goals.splice(index, 1);
+              })
+              .catch(error => {
+              });
+          }
         },
 
+        _formatDateTime(date, format = 'MM/DD/YYYY hh:mm A') {
+          return date === null ? '' : moment(date).format(format);
+        },
 
     }
 }

@@ -5,31 +5,25 @@ Mission.vue:
             <div class="col-md-12">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <h3><span class="glyphicon glyphicon-dashboard"></span> Missions </h3> <br>
+                        <h3><span class="glyphicon glyphicon-dashboard"></span> Missions </h3>
                         <button @click="initAddMission()" class="btn btn-success " style="padding:5px">
                             Add New Mission
                         </button>
                     </div>
 
                     <div class="panel-body">
-                        <table class="table table-bordered table-striped table-responsive" v-if="missions.length > 0">
+                        <table class="table table-striped table-responsive-lg" v-if="missions.length > 0">
                             <tbody>
                             <tr>
                                 <th>No.</th>
                                 <th>Name</th>
-                                <th>Description</th>
                                 <th>Due Date</th>
-                                <th>Created</th>
-                                <th>Updated</th>
                                 <th>Action</th>
                             </tr>
                             <tr v-for="(mission, index) in missions">
                                 <td>{{ index + 1 }}</td>
                                 <td>{{ mission.name }}</td>
-                                <td>{{ mission.description }}</td>
                                 <td>{{ _formatDateTime(mission.due_date, 'MM/DD/YYYY') }}</td>
-                                <td>{{ _formatDateTime(mission.created_at, 'MM/DD/YYYY hh:mm A') }}</td>
-                                <td>{{ _formatDateTime(mission.updated_at, 'MM/DD/YYYY hh:mm A') }}</td>
                                 <td><button @click="initUpdate(index)" class="btn btn-success btn-xs" style="padding:8px"><span class="glyphicon glyphicon-edit"></span></button>
                                     <button @click="deleteMission(index)" class="btn btn-danger btn-xs" style="padding:8px"><span class="glyphicon glyphicon-trash"></span></button>
                                 </td>
@@ -163,6 +157,7 @@ export default {
     {
         this.readMissions();
     },
+
     methods: {
 
         readMissions()
@@ -183,7 +178,7 @@ export default {
             axios.post('/mission', {
                 name: this.mission.name,
                 description: this.mission.description,
-                due_date: this.mission.due_date === null || '' ? null : moment(this.mission.due_date).format('YYYY-MM-DD')
+                due_date: this.mission.due_date === null || this.mission.due_date === '' ? null : moment(this.mission.due_date).format('YYYY-MM-DD')
             })
             .then(response => {
                 this.reset();
@@ -222,7 +217,7 @@ export default {
             axios.patch('/mission/' + this.update_mission.id, {
                 name: this.update_mission.name,
                 description: this.update_mission.description,
-                due_date: this.update_mission.due_date === null || '' ? null : moment(this.update_mission.due_date).format("YYYY-MM-DD")
+                due_date: this.update_mission.due_date === null || this.update_mission.due_date ===  '' ? null : moment(this.update_mission.due_date).format("YYYY-MM-DD")
             })
             .then(response => {
                 $("#update_mission_model").modal("hide");

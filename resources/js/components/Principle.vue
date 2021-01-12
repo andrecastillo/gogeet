@@ -5,29 +5,23 @@ Principle.vue:
             <div class="col-md-12">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <h3><span class="glyphicon glyphicon-dashboard"></span> Principles </h3> <br>
+                        <h3><span class="glyphicon glyphicon-dashboard"></span> Principles </h3>
                         <button @click="initAddPrinciple()" class="btn btn-success " style="padding:5px">
                             Add New Principle
                         </button>
                     </div>
 
                     <div class="panel-body">
-                        <table class="table table-bordered table-striped table-responsive" v-if="principles.length > 0">
+                        <table class="table table-striped table-responsive-lg" v-if="principles.length > 0">
                             <tbody>
                             <tr>
                                 <th>No.</th>
                                 <th>Name</th>
-                                <th>Description</th>
-                                <th>Created</th>
-                                <th>Updated</th>
                                 <th>Action</th>
                             </tr>
                             <tr v-for="(principle, index) in principles">
                                 <td>{{ index + 1 }}</td>
                                 <td>{{ principle.name }}</td>
-                                <td>{{ principle.description }}</td>
-                                <td>{{ _formatDateTime(principle.created_at) }}</td>
-                                <td>{{ _formatDateTime(principle.updated_at) }}</td>
                                 <td><button @click="initUpdate(index)" class="btn btn-success btn-xs" style="padding:8px"><span class="glyphicon glyphicon-edit"></span></button>
                                     <button @click="deletePrinciple(index)" class="btn btn-danger btn-xs" style="padding:8px"><span class="glyphicon glyphicon-trash"></span></button>
                                 </td>
