@@ -62,8 +62,9 @@ class TaskController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'name' => 'required',
-            'description' => 'required',
+            'name' => 'string|required|max:256',
+            'description' => 'string|nullable',
+            'due_date' => 'date|nullable'
         ]);
 
         $task = Task::create([
@@ -111,9 +112,9 @@ class TaskController extends Controller
     public function update(Request $request, Task $task)
     {
         $this->validate($request, [
-            'name'        => 'required|max:256',
-            'description' => 'required',
-            'due_date' => 'nullable|date'
+            'name'        => 'string|required|max:256',
+            'description' => 'string|nullable',
+            'due_date' => 'date|nullable'
         ]);
 
         $task->name = request('name');

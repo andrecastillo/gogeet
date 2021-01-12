@@ -63,9 +63,9 @@ class MissionController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'name' => 'required',
-            'description' => 'required',
-            'due_date' => 'nullable|date',
+            'name' => 'string|required|max:256',
+            'description' => 'string|nullable',
+            'due_date' => 'date|nullable',
         ]);
 
         $mission = Mission::create([
@@ -114,9 +114,9 @@ class MissionController extends Controller
     public function update(Request $request, Mission $mission)
     {
         $this->validate($request, [
-            'name'        => 'required',
-            'description' => 'required',
-            'due_date' => 'nullable|date'
+            'name'        => 'string|required|max:256',
+            'description' => 'string|nullable',
+            'due_date' => 'date|nullable'
         ]);
 
         $mission->name = request('name');

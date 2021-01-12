@@ -62,8 +62,8 @@ class PrincipleController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'name' => 'required',
-            'description' => 'required'
+            'name' => 'string|required|max:256',
+            'description' => 'string|nullable'
         ]);
 
         $principle = Principle::create([
@@ -110,8 +110,8 @@ class PrincipleController extends Controller
     public function update(Request $request, Principle $principle)
     {
         $this->validate($request, [
-            'name'        => 'required',
-            'description' => 'required'
+            'name'        => 'string|required|max:256',
+            'description' => 'string|nullable'
         ]);
 
         $principle->name = request('name');

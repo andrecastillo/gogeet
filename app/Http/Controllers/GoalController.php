@@ -64,8 +64,9 @@ class GoalController extends Controller
     {
 
         $this->validate($request, [
-            'name' => 'required',
-            'due_date' => 'nullable|date'
+            'name' => 'string|required|max:256',
+            'description' => 'string|nullable',
+            'due_date' => 'date|nullable'
         ]);
 
         $goal = Goal::create([
@@ -113,9 +114,9 @@ class GoalController extends Controller
     public function update(Request $request, Goal $goal)
     {
         $this->validate($request, [
-            'name'        => 'required',
-            'description' => 'required',
-            'due_date' => 'nullable|date',
+            'name'        => 'string|required|max:256',
+            'description' => 'string|nullable',
+            'due_date' => 'date|nullable',
         ]);
 
         $goal->name = request('name');
