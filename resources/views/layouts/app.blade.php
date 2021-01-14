@@ -25,23 +25,32 @@
 
             <div class="row h-100">
                 <!-- left sidebar -->
-                @include('partials.sidebar')
+                <nav id="sidebarMenu" class="col navbar-dark bg-dark sidebar">
+                    @include('partials.sidebar')
+                </nav>
                 <!-- /left sidebar -->
 
-                <!-- main content -->
-                <main class="col-md-9 ml-sm-auto col-lg-11 px-md-4 h-100">
-                    <!-- top bar -->
-                    @include('partials.topbar')
+                <div class="col-11">
+                    <div class="row">
+                        <!-- top bar -->
+                        @include('partials.topbar')
+                        <!-- /top bar-->
+                    </div>
 
-                    <!-- main content -->
-                    @yield('content')
-                </main>
-                <!-- /main content -->
+                    <div class="row h-100">
+                        <!-- main content -->
+                        <main class="col-7 h-100">
+                            @yield('content')
+                        </main>
+                        <!-- /main content -->
 
-                <!-- right sidebar --
-                <div id="rightsidebar col-sm-auto">
+                        <!-- right sidebar -->
+                        <div id="rightsidebar" class="col-5">
+                        </div>
+                        <!-- /right sidebar -->
+                    </div>
                 </div>
-                <-- /right sidebar -->
+
             </div>
 
     </div>
