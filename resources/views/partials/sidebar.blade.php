@@ -1,8 +1,8 @@
-<nav id="sidebarMenu" class="col-md-3 col-lg-1 d-md-block bg-light sidebar collapse">
+<nav id="sidebarMenu" class="col-1 navbar-dark bg-dark sidebar">
     @auth
 
     <!-- Top Of navbar -->
-    <a class="navbar-brand" href="{{ url('/tasks') }}">
+    <a class="navbar-brand " href="{{ url('/tasks') }}">
         {{ config('app.name', 'goGeet') }}
     </a>
 

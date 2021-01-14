@@ -23,11 +23,10 @@
 <body>
     <div id="app" class="container-fluid h-100">
 
-        <div class="container-fluid h-100">
-            <div class="row pt-3 h-100">
-                <!-- sidebar -->
+            <div class="row h-100">
+                <!-- left sidebar -->
                 @include('partials.sidebar')
-                <!-- /sidebar -->
+                <!-- /left sidebar -->
 
                 <!-- main content -->
                 <main class="col-md-9 ml-sm-auto col-lg-11 px-md-4 h-100">
@@ -38,8 +37,12 @@
                     @yield('content')
                 </main>
                 <!-- /main content -->
+
+                <!-- right sidebar --
+                <div id="rightsidebar col-sm-auto">
+                </div>
+                <-- /right sidebar -->
             </div>
-        </div>
 
     </div>
 </body>
