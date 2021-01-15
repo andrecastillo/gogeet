@@ -36,7 +36,7 @@ Principle.vue:
         <div class="modal fade" tabindex="-1" role="dialog" id="add_principle_model">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
-                    <div class="modal-header">
+                    <div class="modal-header d-inline">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                             aria-hidden="true">&times;</span></button>
                         <h4 class="modal-title">Add New Principle</h4>
@@ -69,7 +69,7 @@ Principle.vue:
         <div class="modal fade" tabindex="-1" role="dialog" id="update_principle_model">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
-                    <div class="modal-header">
+                    <div class="modal-header d-inline">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                         <h4 class="modal-title">Update Principle</h4>
                     </div>
@@ -112,13 +112,12 @@ Principle.vue:
 
     export default {
         name: 'principle',
+
         data(){
             return {
                 principle: {
                     name: '',
                     description: '',
-                    created_at: '',
-                    updated_at: ''
                 },
                 errors: [],
                 principles: [],
@@ -130,6 +129,7 @@ Principle.vue:
         {
             this.readPrinciples();
         },
+
         methods: {
 
             readPrinciples()

@@ -39,7 +39,7 @@ Task.vue:
         <div class="modal fade" tabindex="-1" role="dialog" id="add_task_model">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
-                    <div class="modal-header">
+                    <div class="modal-header d-inline">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                             aria-hidden="true">&times;</span></button>
                         <h4 class="modal-title">Add New Task</h4>
@@ -80,7 +80,7 @@ Task.vue:
         <div class="modal fade" tabindex="-1" role="dialog" id="update_task_model">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
-                    <div class="modal-header">
+                    <div class="modal-header d-inline">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                         <h4 class="modal-title">Update Task</h4>
                     </div>
@@ -140,8 +140,6 @@ export default {
             task: {
                 name: '',
                 description: '',
-                created_at: '',
-                updated_at: ''
             },
             errors: [],
             tasks: [],
