@@ -5,7 +5,7 @@ Principle.vue:
             <div class="col-md-12">
                 <div class="panel panel-default">
                     <div class="panel-heading ml-0 mt-2 mr-0 mb-2">
-                        <button @click="initAddPrinciple()" class="btn btn-success " style="padding:5px">
+                        <button @click="_initAddPrinciple()" class="btn btn-success " style="padding:5px">
                             Add New Principle
                         </button>
                     </div>
@@ -22,7 +22,7 @@ Principle.vue:
                                 <tr v-for="(principle, index) in principles">
                                     <td>{{ principle.name }}</td>
                                     <td>
-                                        <button @click="initUpdate(index)" class="btn btn-success btn-xs" style="padding:8px"><span class="glyphicon glyphicon-edit"></span></button>
+                                        <button @click="_initUpdatePrinciple(index)" class="btn btn-success btn-xs" style="padding:8px"><span class="glyphicon glyphicon-edit"></span></button>
                                         <button @click="deletePrinciple(index)" class="btn btn-danger btn-xs" style="padding:8px"><span class="glyphicon glyphicon-trash"></span></button>
                                     </td>
                                 </tr>
@@ -132,23 +132,12 @@ Principle.vue:
         },
         methods: {
 
-            deletePrinciple(index)
+            readPrinciples()
             {
-                let conf = confirm("Do you ready want to delete this principle?");
-                if (conf === true) {
-                    axios.delete('/principle/' + this.principles[index].id)
-                        .then(response => {
-                            this.principles.splice(index, 1);
-                        })
-                        .catch(error => {
-                        });
-                }
-            },
-
-            initAddPrinciple()
-            {
-              this.errors = [];
-              $("#add_principle_model").modal("show");
+                axios.get('/principle')
+                    .then(response => {
+                        this.principles = response.data.principles;
+                    });
             },
 
             createPrinciple()
@@ -158,7 +147,7 @@ Principle.vue:
                     description: this.principle.description,
                 })
                     .then(response => {
-                        this.reset();
+                        this._reset();
                         this.principles.push(response.data.principles);
                         $("#add_principle_model").modal("hide");
                     })
@@ -172,27 +161,6 @@ Principle.vue:
                             this.errors.push(error.response.data.errors.description[0]);
                         }
                     });
-            },
-
-            reset()
-            {
-                this.principle.name = '';
-                this.principle.description = '';
-            },
-
-            readPrinciples()
-            {
-                axios.get('/principle')
-                    .then(response => {
-                        this.principles = response.data.principles;
-                    });
-            },
-
-            initUpdate(index)
-            {
-                this.errors = [];
-                $("#update_principle_model").modal("show");
-                this.update_principle = this.principles[index];
             },
 
             updatePrinciple()
@@ -213,6 +181,38 @@ Principle.vue:
                             this.errors.push(error.response.data.errors.description[0]);
                         }
                     });
+            },
+
+            deletePrinciple(index)
+            {
+                let conf = confirm("Do you ready want to delete this principle?");
+                if (conf === true) {
+                    axios.delete('/principle/' + this.principles[index].id)
+                        .then(response => {
+                            this.principles.splice(index, 1);
+                        })
+                        .catch(error => {
+                        });
+                }
+            },
+
+            _initAddPrinciple()
+            {
+              this.errors = [];
+              $("#add_principle_model").modal("show");
+            },
+
+            _initUpdatePrinciple(index)
+            {
+                this.errors = [];
+                $("#update_principle_model").modal("show");
+                this.update_principle = this.principles[index];
+            },
+
+            _reset()
+            {
+                this.principle.name = '';
+                this.principle.description = '';
             },
 
             _formatDateTime(date, format = 'MM/DD/YYYY hh:mm A') {

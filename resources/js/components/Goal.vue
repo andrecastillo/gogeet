@@ -5,7 +5,7 @@ Goal.vue:
             <div class="col-md-12">
                 <div class="panel panel-default">
                     <div class="panel-heading ml-0 mt-2 mr-0 mb-2">
-                        <button @click="initAddGoal()" class="btn btn-success " style="padding:5px">
+                        <button @click="_initAddGoal()" class="btn btn-success " style="padding:5px">
                             Add New Goal
                         </button>
                     </div>
@@ -23,7 +23,7 @@ Goal.vue:
                                 <tr v-for="(goal, index) in goals">
                                     <td>{{ goal.name }}</td>
                                     <td>{{ _formatDateTime(goal.due_date, 'MM/DD/YYYY') }}</td>
-                                    <td><button @click="initUpdate(index)" class="btn btn-success btn-xs" style="padding:8px"><span class="glyphicon glyphicon-edit"></span></button>
+                                    <td><button @click="_initUpdateGoal(index)" class="btn btn-success btn-xs" style="padding:8px"><span class="glyphicon glyphicon-edit"></span></button>
                                         <button @click="deleteGoal(index)" class="btn btn-danger btn-xs" style="padding:8px"><span class="glyphicon glyphicon-trash"></span></button>
                                     </td>
                                 </tr>
@@ -160,12 +160,6 @@ export default {
                 });
         },
 
-        initAddGoal()
-        {
-          this.errors = [];
-          $("#add_goal_model").modal("show");
-        },
-
         createGoal()
         {
             axios.post('/goal', {
@@ -174,7 +168,7 @@ export default {
                 due_date: this.goal.due_date === null || this.goal.due_date === '' ? null : moment(this.goal.due_date).format('YYYY-MM-DD')
             })
             .then(response => {
-                this.reset();
+                this._reset();
                 this.goals.push(response.data.goals);
                 $("#add_goal_model").modal("hide");
             })
@@ -188,21 +182,6 @@ export default {
                     this.errors.push(error.response.data.errors.description[0]);
                 }
             });
-        },
-
-        reset()
-        {
-            this.goal.name = '';
-            this.goal.description = '';
-            this.goal.due_date = '';
-        },
-
-        initUpdate(index)
-        {
-            this.errors = [];
-            $("#update_goal_model").modal("show");
-            this.update_goal = this.goals[index];
-            this.update_goal.due_date = this.update_goal.due_date === null ? null : moment(this.update_goal.due_date).format('MM/DD/YYYY');
         },
 
         updateGoal()
@@ -236,6 +215,27 @@ export default {
               .catch(error => {
               });
           }
+        },
+
+        _initAddGoal()
+        {
+          this.errors = [];
+          $("#add_goal_model").modal("show");
+        },
+
+        _initUpdateGoal(index)
+        {
+            this.errors = [];
+            $("#update_goal_model").modal("show");
+            this.update_goal = this.goals[index];
+            this.update_goal.due_date = this.update_goal.due_date === null ? null : moment(this.update_goal.due_date).format('MM/DD/YYYY');
+        },
+
+        _reset()
+        {
+            this.goal.name = '';
+            this.goal.description = '';
+            this.goal.due_date = '';
         },
 
         _formatDateTime(date, format = 'MM/DD/YYYY hh:mm A') {

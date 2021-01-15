@@ -5,7 +5,7 @@ Mission.vue:
             <div class="col-md-12">
                 <div class="panel panel-default">
                     <div class="panel-heading ml-0 mt-2 mr-0 mb-2">
-                        <button @click="initAddMission()" class="btn btn-success " style="padding:5px">
+                        <button @click="_initAddMission()" class="btn btn-success " style="padding:5px">
                             Add New Mission
                         </button>
                     </div>
@@ -23,7 +23,7 @@ Mission.vue:
                                 <tr v-for="(mission, index) in missions">
                                     <td>{{ mission.name }}</td>
                                     <td>{{ _formatDateTime(mission.due_date, 'MM/DD/YYYY') }}</td>
-                                    <td><button @click="initUpdate(index)" class="btn btn-success btn-xs" style="padding:8px"><span class="glyphicon glyphicon-edit"></span></button>
+                                    <td><button @click="_initUpdateMission(index)" class="btn btn-success btn-xs" style="padding:8px"><span class="glyphicon glyphicon-edit"></span></button>
                                         <button @click="deleteMission(index)" class="btn btn-danger btn-xs" style="padding:8px"><span class="glyphicon glyphicon-trash"></span></button>
                                     </td>
                                 </tr>
@@ -167,12 +167,6 @@ export default {
                 });
         },
 
-        initAddMission()
-        {
-            this.errors = [];
-            $("#add_mission_model").modal("show");
-        },
-
         createMission()
         {
             axios.post('/mission', {
@@ -181,7 +175,7 @@ export default {
                 due_date: this.mission.due_date === null || this.mission.due_date === '' ? null : moment(this.mission.due_date).format('YYYY-MM-DD')
             })
             .then(response => {
-                this.reset();
+                this._reset();
                 this.missions.push(response.data.missions);
                 $("#add_mission_model").modal("hide");
             })
@@ -195,21 +189,6 @@ export default {
                     this.errors.push(error.response.data.errors.description[0]);
                 }
             });
-        },
-
-        reset()
-        {
-            this.mission.name = '';
-            this.mission.description = '';
-            this.mission.due_date = '';
-        },
-
-        initUpdate(index)
-        {
-            this.errors = [];
-            $("#update_mission_model").modal("show");
-            this.update_mission = this.missions[index];
-            this.update_mission.due_date = this.update_mission.due_date === null ? null : moment(this.update_mission.due_date).format('MM/DD/YYYY');
         },
 
         updateMission()
@@ -244,6 +223,27 @@ export default {
                     .catch(error => {
                     });
             }
+        },
+
+        _initAddMission()
+        {
+            this.errors = [];
+            $("#add_mission_model").modal("show");
+        },
+
+        _initUpdateMission(index)
+        {
+            this.errors = [];
+            $("#update_mission_model").modal("show");
+            this.update_mission = this.missions[index];
+            this.update_mission.due_date = this.update_mission.due_date === null ? null : moment(this.update_mission.due_date).format('MM/DD/YYYY');
+        },
+
+        _reset()
+        {
+            this.mission.name = '';
+            this.mission.description = '';
+            this.mission.due_date = '';
         },
 
         _formatDateTime(date, format = "MM/DD/YYYY") {

@@ -5,7 +5,7 @@ Task.vue:
             <div class="col-md-12">
                 <div class="panel panel-default">
                     <div class="panel-heading ml-0 mt-2 mr-0 mb-2">
-                        <button @click="initAddTask()" class="btn btn-success " style="padding:5px">
+                        <button @click="_initAddTask()" class="btn btn-success " style="padding:5px">
                             Add New Task
                         </button>
                     </div>
@@ -24,7 +24,7 @@ Task.vue:
                                     <td>{{ task.name }}</td>
                                     <td>{{ _formatDateTime(task.due_date, 'MM/DD/YYYY') }}</td>
                                     <td>
-                                        <button @click="initUpdate(index)" class="btn btn-success btn-xs" style="padding:8px"><span class="glyphicon glyphicon-edit"></span></button>
+                                        <button @click="_initUpdateTask(index)" class="btn btn-success btn-xs" style="padding:8px"><span class="glyphicon glyphicon-edit"></span></button>
                                         <button @click="deleteTask(index)" class="btn btn-danger btn-xs" style="padding:8px"><span class="glyphicon glyphicon-trash"></span></button>
                                     </td>
                                 </tr>
@@ -164,12 +164,6 @@ export default {
                 });
         },
 
-        initAddTask()
-        {
-            this.errors = [];
-            $("#add_task_model").modal("show");
-        },
-
         createTask()
         {
             axios.post('/task', {
@@ -178,7 +172,7 @@ export default {
                 due_date: this.task.due_date === null || this.task.due_date === '' ? null : moment(this.task.due_date).format('YYYY-MM-DD')
             })
             .then(response => {
-                this.reset();
+                this._reset();
                 this.tasks.push(response.data.tasks);
                 $("#add_task_model").modal("hide");
             })
@@ -192,21 +186,6 @@ export default {
                     this.errors.push(error.response.data.errors.description[0]);
                 }
             });
-        },
-
-        reset()
-        {
-            this.task.name = '';
-            this.task.description = '';
-            this.task.due_date = '';
-        },
-
-        initUpdate(index)
-        {
-            this.errors = [];
-            $("#update_task_model").modal("show");
-            this.update_task = this.tasks[index];
-            this.update_task.due_date = this.update_task.due_date === null ? null : moment(this.update_task.due_date).format('MM/DD/YYYY');
         },
 
         updateTask()
@@ -241,6 +220,27 @@ export default {
                     .catch(error => {
                     });
             }
+        },
+
+        _initAddTask()
+        {
+            this.errors = [];
+            $("#add_task_model").modal("show");
+        },
+
+        _initUpdateTask(index)
+        {
+            this.errors = [];
+            $("#update_task_model").modal("show");
+            this.update_task = this.tasks[index];
+            this.update_task.due_date = this.update_task.due_date === null ? null : moment(this.update_task.due_date).format('MM/DD/YYYY');
+        },
+
+        _reset()
+        {
+            this.task.name = '';
+            this.task.description = '';
+            this.task.due_date = '';
         },
 
         _formatDateTime(date, format = "MM/DD/YYYY") {
