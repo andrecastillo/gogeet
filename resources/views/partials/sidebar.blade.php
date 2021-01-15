@@ -7,9 +7,9 @@
 
 <!-- navigation -->
 <ul class="navbar-nav mr-auto">
-    <li><a href="{{ route('principles.home') }}">Principles</a></li>
-    <li><a href="{{ route('missions.home') }}">Missions</a></li>
-    <li><a href="{{ route('goals.home') }}">Goals</a></li>
-    <li><a href="{{ route('tasks.index') }}">Tasks</a></li>
+    <a class="nav-item nav-link" style="font-size: 1.5rem;" href="{{ route('principles.home') }}">Principles</a>
+    <a class="nav-item nav-link" style="font-size: 1.5rem;" href="{{ route('missions.home') }}">Missions</a>
+    <a class="nav-item nav-link" style="font-size: 1.5rem;" href="{{ route('goals.home') }}">Goals</a>
+    <a class="nav-item nav-link" style="font-size: 1.5rem;" href="{{ route('tasks.index') }}">Tasks</a>
 </ul>
 @endauth
