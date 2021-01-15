@@ -52,7 +52,7 @@ Task.vue:
 
                     <div class="modal-body">
                         <div class="alert alert-danger" v-if="errors.length > 0">
-                            <ul>
+                            <ul class="m-0">
                                 <li v-for="error in errors">{{ error }}</li>
                             </ul>
                         </div>
@@ -92,7 +92,7 @@ Task.vue:
 
                     <div class="modal-body">
                         <div class="alert alert-danger" v-if="errors.length > 0">
-                            <ul>
+                            <ul class="m-0">
                                 <li v-for="error in errors">{{ error }}</li>
                             </ul>
                         </div>
