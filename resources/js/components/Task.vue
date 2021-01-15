@@ -4,7 +4,7 @@ Task.vue:
         <div class="row">
             <div class="col-md-12">
                 <div class="panel panel-default">
-                    <div class="panel-heading">
+                    <div class="panel-heading ml-0 mt-2 mr-0 mb-2">
                         <button @click="initAddTask()" class="btn btn-success " style="padding:5px">
                             Add New Task
                         </button>
