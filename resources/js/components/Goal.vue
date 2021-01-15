@@ -11,16 +11,16 @@ Goal.vue:
                     </div>
 
                     <div class="panel-body">
-                        <table class="table table-striped table-responsive-lg" v-if="goals.length > 0">
-                            <tbody>
+                        <table class="table table-responsive-lg table-sm table-hover" v-if="goals.length > 0">
+                            <thead>
                                 <tr>
-                                    <th>No.</th>
-                                    <th>Name</th>
-                                    <th>Due Date</th>
-                                    <th>Action</th>
+                                    <th scope="col">Name</th>
+                                    <th scope="col">Due Date</th>
+                                    <th scope="col">Action</th>
                                 </tr>
+                            </thead>
+                            <tbody>
                                 <tr v-for="(goal, index) in goals">
-                                    <td>{{ index + 1 }}</td>
                                     <td>{{ goal.name }}</td>
                                     <td>{{ _formatDateTime(goal.due_date, 'MM/DD/YYYY') }}</td>
                                     <td><button @click="initUpdate(index)" class="btn btn-success btn-xs" style="padding:8px"><span class="glyphicon glyphicon-edit"></span></button>

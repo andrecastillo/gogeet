@@ -2,7 +2,7 @@
     <div class="container-fluid">
 
         @auth
-        <h3>{{ $title }}</h3>
+        <h1 class="m-0">{{ $title }}</h1>
         @endauth
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">

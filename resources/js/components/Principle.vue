@@ -11,20 +11,21 @@ Principle.vue:
                     </div>
 
                     <div class="panel-body">
-                        <table class="table table-striped table-responsive-lg" v-if="principles.length > 0">
+                        <table class="table table-responsive-lg table-sm table-hover" v-if="principles.length > 0">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Name</th>
+                                    <th scope="col">Action</th>
+                                </tr>
+                            </thead>
                             <tbody>
-                            <tr>
-                                <th>No.</th>
-                                <th>Name</th>
-                                <th>Action</th>
-                            </tr>
-                            <tr v-for="(principle, index) in principles">
-                                <td>{{ index + 1 }}</td>
-                                <td>{{ principle.name }}</td>
-                                <td><button @click="initUpdate(index)" class="btn btn-success btn-xs" style="padding:8px"><span class="glyphicon glyphicon-edit"></span></button>
-                                    <button @click="deletePrinciple(index)" class="btn btn-danger btn-xs" style="padding:8px"><span class="glyphicon glyphicon-trash"></span></button>
-                                </td>
-                            </tr>
+                                <tr v-for="(principle, index) in principles">
+                                    <td>{{ principle.name }}</td>
+                                    <td>
+                                        <button @click="initUpdate(index)" class="btn btn-success btn-xs" style="padding:8px"><span class="glyphicon glyphicon-edit"></span></button>
+                                        <button @click="deletePrinciple(index)" class="btn btn-danger btn-xs" style="padding:8px"><span class="glyphicon glyphicon-trash"></span></button>
+                                    </td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>

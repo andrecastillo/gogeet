@@ -11,28 +11,23 @@ Task.vue:
                     </div>
 
                     <div class="panel-body">
-                        <table class="table table-striped table-responsive-lg" v-if="tasks.length > 0">
+                        <table class="table table-responsive-lg table-sm table-hover" v-if="tasks.length > 0">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Name</th>
+                                    <th scope="col">Due Date</th>
+                                    <th scope="col">Action</th>
+                                </tr>
+                            </thead>
                             <tbody>
-                            <tr>
-                                <th>No.</th>
-                                <th>Name</th>
-                                <th>Description</th>
-                                <th>Due Date</th>
-                                <th>Created</th>
-                                <th>Updated</th>
-                                <th>Action</th>
-                            </tr>
-                            <tr v-for="(task, index) in tasks">
-                                <td>{{ index + 1 }}</td>
-                                <td>{{ task.name }}</td>
-                                <td>{{ task.description }}</td>
-                                <td>{{ _formatDateTime(task.due_date, 'MM/DD/YYYY') }}</td>
-                                <td>{{ _formatDateTime(task.created_at, 'MM/DD/YYYY hh:mm A') }}</td>
-                                <td>{{ _formatDateTime(task.updated_at, 'MM/DD/YYYY hh:mm A') }}</td>
-                                <td><button @click="initUpdate(index)" class="btn btn-success btn-xs" style="padding:8px"><span class="glyphicon glyphicon-edit"></span></button>
-                                    <button @click="deleteTask(index)" class="btn btn-danger btn-xs" style="padding:8px"><span class="glyphicon glyphicon-trash"></span></button>
-                                </td>
-                            </tr>
+                                <tr v-for="(task, index) in tasks">
+                                    <td>{{ task.name }}</td>
+                                    <td>{{ _formatDateTime(task.due_date, 'MM/DD/YYYY') }}</td>
+                                    <td>
+                                        <button @click="initUpdate(index)" class="btn btn-success btn-xs" style="padding:8px"><span class="glyphicon glyphicon-edit"></span></button>
+                                        <button @click="deleteTask(index)" class="btn btn-danger btn-xs" style="padding:8px"><span class="glyphicon glyphicon-trash"></span></button>
+                                    </td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
