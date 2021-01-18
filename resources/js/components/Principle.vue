@@ -20,7 +20,7 @@ Principle.vue:
                             </thead>
                             <tbody>
                                 <tr v-for="(principle, index) in principles">
-                                    <td>{{ principle.name }}</td>
+                                    <td><a @click="seeDetails(index)">{{ principle.name }}</a></td>
                                     <td>
                                         <button @click="_initUpdatePrinciple(index)" class="btn btn-success btn-xs" style="padding:8px"><span class="glyphicon glyphicon-edit"></span></button>
                                         <button @click="deletePrinciple(index)" class="btn btn-danger btn-xs" style="padding:8px"><span class="glyphicon glyphicon-trash"></span></button>
@@ -146,21 +146,21 @@ Principle.vue:
                     name: this.principle.name,
                     description: this.principle.description,
                 })
-                    .then(response => {
-                        this._reset();
-                        this.principles.push(response.data.principles);
-                        $("#add_principle_model").modal("hide");
-                    })
-                    .catch(error => {
-                        this.errors = [];
-                        if (error.response.data.errors && error.response.data.errors.name) {
-                            this.errors.push(error.response.data.errors.name[0]);
-                        }
-                        if (error.response.data.errors && error.response.data.errors.description)
-                        {
-                            this.errors.push(error.response.data.errors.description[0]);
-                        }
-                    });
+                .then(response => {
+                    this._reset();
+                    this.principles.push(response.data.principles);
+                    $("#add_principle_model").modal("hide");
+                })
+                .catch(error => {
+                    this.errors = [];
+                    if (error.response.data.errors && error.response.data.errors.name) {
+                        this.errors.push(error.response.data.errors.name[0]);
+                    }
+                    if (error.response.data.errors && error.response.data.errors.description)
+                    {
+                        this.errors.push(error.response.data.errors.description[0]);
+                    }
+                });
             },
 
             updatePrinciple()
@@ -196,10 +196,15 @@ Principle.vue:
                 }
             },
 
+            seeDetails(index)
+            {
+                this.$root.$emit('loadDetails', this.principles[index].id);
+            },
+
             _initAddPrinciple()
             {
-              this.errors = [];
-              $("#add_principle_model").modal("show");
+                this.errors = [];
+                $("#add_principle_model").modal("show");
             },
 
             _initUpdatePrinciple(index)

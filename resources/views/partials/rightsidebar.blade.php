@@ -1,0 +1,1 @@
+<principle-details></principle-details>

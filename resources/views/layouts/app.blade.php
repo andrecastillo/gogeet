@@ -46,6 +46,7 @@
 
                         <!-- right sidebar -->
                         <div id="rightsidebar" class="col-5">
+                            @include('partials.rightsidebar')
                         </div>
                         <!-- /right sidebar -->
                     </div>
