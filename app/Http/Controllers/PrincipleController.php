@@ -84,9 +84,11 @@ class PrincipleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($contact_id)
     {
-        //
+        return response()->json([
+            'principle' => Principle::findOrFail($contact_id)
+        ], 200);
     }
 
     /**

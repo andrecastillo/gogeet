@@ -1,35 +1,48 @@
 <template>
-    <p>{{ principle.id }}</p>
+    <div>
+        <p>Title: {{ principle.name }}</p>
+        <p>Description: {{ principle.description }}</p>
+        <p>Created: {{ _formatDateTime(principle.created_at) }}</p>
+        <p>Updated: {{ _formatDateTime(principle.updated_at) }}</p>
+    </div>
 </template>
 
 <script>
 
-  export default {
+export default {
     name: 'PrincipleDetails',
     data(){
         return {
             principle: {
+                created_at: '',
+                deleted_at: '',
+                description: '',
                 id: 0,
                 name: '',
-                description: '',
-                created_at: '',
-                updated_at: ''
+                updated_at: '',
+                user_id: '',
             }
         }
     },
     created() {
-        this.$root.$on('loadDetails', this.details);
+        this.$root.$on('loadDetails', this.getDetails);
     },
     methods: {
 
-      details: function (id)
-      {
-        console.log('h');
-        this.principle.id = id;
-      }
+        getDetails: function (id)
+        {
+            axios.get('/principle/'+id)
+            .then(response => {
+                this.principle = response.data.principle;
+            });
+        },
+
+        _formatDateTime(date, format = 'MM/DD/YYYY hh:mm A') {
+            return date === null ? '' : moment(date).format(format);
+        },
 
     }
-  }
+}
 
 </script>
 
