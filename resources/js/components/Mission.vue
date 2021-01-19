@@ -20,10 +20,11 @@ Mission.vue:
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr v-for="(mission, index) in missions">
+                                <tr v-for="(mission, index) in missions" @click="seeDetails(index)">
                                     <td>{{ mission.name }}</td>
                                     <td>{{ _formatDateTime(mission.due_date, 'MM/DD/YYYY') }}</td>
-                                    <td><button @click="_initUpdateMission(index)" class="btn btn-success btn-xs" style="padding:8px"><span class="glyphicon glyphicon-edit"></span></button>
+                                    <td>
+                                        <button @click="_initUpdateMission(index)" class="btn btn-success btn-xs" style="padding:8px"><span class="glyphicon glyphicon-edit"></span></button>
                                         <button @click="deleteMission(index)" class="btn btn-danger btn-xs" style="padding:8px"><span class="glyphicon glyphicon-trash"></span></button>
                                     </td>
                                 </tr>
@@ -131,7 +132,7 @@ Mission.vue:
 import Datepicker from 'vuejs-datepicker';
 
 export default {
-    name: 'mission',
+    name: 'Mission',
     components: {
         Datepicker
     },
@@ -221,6 +222,11 @@ export default {
                     .catch(error => {
                     });
             }
+        },
+
+        seeDetails(index)
+        {
+            this.$root.$emit('loadDetails', this.missions[index].id);
         },
 
         _initAddMission()

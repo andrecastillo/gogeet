@@ -20,10 +20,11 @@ Goal.vue:
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr v-for="(goal, index) in goals">
+                                <tr v-for="(goal, index) in goals" @click="seeDetails(index)">
                                     <td>{{ goal.name }}</td>
                                     <td>{{ _formatDateTime(goal.due_date, 'MM/DD/YYYY') }}</td>
-                                    <td><button @click="_initUpdateGoal(index)" class="btn btn-success btn-xs" style="padding:8px"><span class="glyphicon glyphicon-edit"></span></button>
+                                    <td>
+                                        <button @click="_initUpdateGoal(index)" class="btn btn-success btn-xs" style="padding:8px"><span class="glyphicon glyphicon-edit"></span></button>
                                         <button @click="deleteGoal(index)" class="btn btn-danger btn-xs" style="padding:8px"><span class="glyphicon glyphicon-trash"></span></button>
                                     </td>
                                 </tr>
@@ -124,7 +125,7 @@ Goal.vue:
 import Datepicker from 'vuejs-datepicker';
 
 export default {
-    name: 'goal',
+    name: 'Goal',
     components: {
         Datepicker
     },
@@ -213,6 +214,11 @@ export default {
               .catch(error => {
               });
           }
+        },
+
+        seeDetails(index)
+        {
+            this.$root.$emit('loadDetails', this.goals[index].id);
         },
 
         _initAddGoal()

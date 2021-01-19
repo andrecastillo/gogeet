@@ -20,7 +20,7 @@ Task.vue:
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr v-for="(task, index) in tasks">
+                                <tr v-for="(task, index) in tasks" @click="seeDetails(index)">
                                     <td>{{ task.name }}</td>
                                     <td>{{ _formatDateTime(task.due_date, 'MM/DD/YYYY') }}</td>
                                     <td>
@@ -129,7 +129,7 @@ Task.vue:
 import Datepicker from 'vuejs-datepicker';
 
 export default {
-    name: 'task',
+    name: 'Task',
     components: {
       Datepicker
     },
@@ -218,6 +218,11 @@ export default {
                     .catch(error => {
                     });
             }
+        },
+
+        seeDetails(index)
+        {
+            this.$root.$emit('loadDetails', this.tasks[index].id);
         },
 
         _initAddTask()

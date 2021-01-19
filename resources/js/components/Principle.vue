@@ -19,8 +19,8 @@ Principle.vue:
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr v-for="(principle, index) in principles">
-                                    <td><a @click="seeDetails(index)">{{ principle.name }}</a></td>
+                                <tr v-for="(principle, index) in principles" @click="seeDetails(index)">
+                                    <td>{{ principle.name }}</td>
                                     <td>
                                         <button @click="_initUpdatePrinciple(index)" class="btn btn-success btn-xs" style="padding:8px"><span class="glyphicon glyphicon-edit"></span></button>
                                         <button @click="deletePrinciple(index)" class="btn btn-danger btn-xs" style="padding:8px"><span class="glyphicon glyphicon-trash"></span></button>
@@ -111,7 +111,7 @@ Principle.vue:
 <script>
 
     export default {
-        name: 'principle',
+        name: 'Principle',
 
         data(){
             return {
