@@ -1,130 +1,125 @@
 Mission.vue:
 <template>
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="panel panel-default">
-                    <div class="panel-heading ml-0 mt-2 mr-0 mb-2">
-                        <button @click="_initAddMission()" class="btn btn-success " style="padding:5px">
-                            Add New Mission
-                        </button>
-                    </div>
+<div>
 
-                    <div class="panel-body">
-                        <table class="table table-responsive-lg table-sm table-hover" v-if="missions.length > 0">
-                            <thead>
-                                <tr>
-                                    <th scope="col">Name</th>
-                                    <th scope="col">Due Date</th>
-                                    <th scope="col">Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr v-for="(mission, index) in missions" @click="seeDetails(index)">
-                                    <td>{{ mission.name }}</td>
-                                    <td>{{ _formatDateTime(mission.due_date, 'MM/DD/YYYY') }}</td>
-                                    <td>
-                                        <button @click="_initUpdateMission(index)" class="btn btn-success btn-xs" style="padding:8px"><span class="glyphicon glyphicon-edit"></span></button>
-                                        <button @click="deleteMission(index)" class="btn btn-danger btn-xs" style="padding:8px"><span class="glyphicon glyphicon-trash"></span></button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- add mission modal -->
-        <div class="modal fade" tabindex="-1" role="dialog" id="add_mission_model">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-
-                    <div class="modal-header d-inline">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                            aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title">Add New Mission</h4>
-                    </div>
-
-                    <div class="modal-body">
-
-                        <div class="alert alert-danger" v-if="errors.length > 0">
-                            <ul class="m-0">
-                                <li v-for="error in errors">{{ error }}</li>
-                            </ul>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="name">Name:</label>
-                            <input type="text" name="name" id="name" placeholder="Mission Name" class="form-control" v-model="mission.name">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="description">Description:</label>
-                            <textarea name="description" id="description" cols="30" rows="5" class="form-control" placeholder="Mission Description" v-model="mission.description"></textarea>
-                        </div>
-
-                        <div class="form-group force-inline">
-                            <label for="due_date">Due Date:</label>
-                            <datepicker name="due_date" id="due_date" placeholder="Due Date" v-model="mission.due_date" :format="date_format" :clear-button="clear_button"></datepicker>
-                        </div>
-                    </div>
-
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button type="button" @click="createMission" class="btn btn-primary">Submit</button>
-                    </div>
-                </div><!-- /.modal-content -->
-            </div><!-- /.modal-dialog -->
-        </div><!-- /.modal - end add mission -->
-
-        <!-- update mission modal -->
-        <div class="modal fade" tabindex="-1" role="dialog" id="update_mission_model">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header d-inline">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title">Update Mission</h4>
-                    </div>
-
-                    <div class="modal-body">
-                        <div class="alert alert-danger" v-if="errors.length > 0">
-                            <ul class="m-0">
-                                <li v-for="error in errors">{{ error }}</li>
-                            </ul>
-                        </div>
-
-                        <div class="form-group">
-                            <label>Name:</label>
-                            <input type="text" placeholder="Mission Name" class="form-control"
-                                   v-model="update_mission.name">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="description">Description:</label>
-                            <textarea cols="30" rows="5" class="form-control"
-                                      placeholder="Mission Description" v-model="update_mission.description"></textarea>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="update_due_date">Due Date:</label>
-                            <datepicker name="update_due_date" id="update_due_date" placeholder="Due Date" v-model="update_mission.due_date" :format="date_format" :clear-button="clear_button"></datepicker>
-                        </div>
-
-                    </div>
-
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button type="button" @click="updateMission" class="btn btn-primary">Submit</button>
-                    </div>
-
-                </div><!-- /.modal-content -->
-
-            </div><!-- /.modal-dialog -->
-
-        </div><!-- /.modal - end update mission modal -->
-
+    <div class="ml-0 mt-2 mr-0 mb-2">
+        <button @click="_initAddMission()" class="btn btn-success " style="padding:5px">
+            Add New Mission
+        </button>
     </div>
+
+    <table class="table table-responsive-lg table-sm table-hover" v-if="missions.length > 0">
+        <thead>
+            <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Due Date</th>
+                <th scope="col">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr v-for="(mission, index) in missions" @click="seeDetails(index)">
+                <td>{{ mission.name }}</td>
+                <td>{{ _formatDateTime(mission.due_date, 'MM/DD/YYYY') }}</td>
+                <td>
+                    <button @click="_initUpdateMission(index)" class="btn btn-success btn-xs" style="padding:8px"><span class="glyphicon glyphicon-edit"></span></button>
+                    <button @click="deleteMission(index)" class="btn btn-danger btn-xs" style="padding:8px"><span class="glyphicon glyphicon-trash"></span></button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- add modal -->
+    <div class="modal fade" tabindex="-1" role="dialog" id="add_mission_model">
+                                                                          <div class="modal-dialog" role="document">
+                                                                          <div class="modal-content">
+
+                                                                          <div class="modal-header d-inline">
+                                                                          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                                                          aria-hidden="true">&times;</span></button>
+                                                                          <h4 class="modal-title">Add New Mission</h4>
+                                                                          </div>
+
+                                                                          <div class="modal-body">
+
+                                                                          <div class="alert alert-danger" v-if="errors.length > 0">
+                                                                          <ul class="m-0">
+                                                                          <li v-for="error in errors">{{ error }}</li>
+                                                                          </ul>
+                                                                          </div>
+
+                                                                          <div class="form-group">
+                                                                          <label for="name">Name:</label>
+                                                                          <input type="text" name="name" id="name" placeholder="Mission Name" class="form-control" v-model="mission.name">
+                                                                          </div>
+
+                                                                          <div class="form-group">
+                                                                          <label for="description">Description:</label>
+                                                                          <textarea name="description" id="description" cols="30" rows="5" class="form-control" placeholder="Mission Description" v-model="mission.description"></textarea>
+                                                                          </div>
+
+                                                                          <div class="form-group force-inline">
+                                                                          <label for="due_date">Due Date:</label>
+                                                                          <datepicker name="due_date" id="due_date" placeholder="Due Date" v-model="mission.due_date" :format="date_format" :clear-button="clear_button"></datepicker>
+                                                                          </div>
+                                                                          </div>
+
+                                                                          <div class="modal-footer">
+                                                                          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                                          <button type="button" @click="createMission" class="btn btn-primary">Submit</button>
+                                                                          </div>
+                                                                          </div><!-- /.modal-content -->
+                                                                          </div><!-- /.modal-dialog -->
+                                                                          </div>
+    <!-- /add modal -->
+
+    <!-- edit modal -->
+    <div class="modal fade" tabindex="-1" role="dialog" id="update_mission_model">
+                                                                             <div class="modal-dialog" role="document">
+                                                                             <div class="modal-content">
+                                                                             <div class="modal-header d-inline">
+                                                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                                             <h4 class="modal-title">Update Mission</h4>
+                                                                             </div>
+
+                                                                             <div class="modal-body">
+                                                                             <div class="alert alert-danger" v-if="errors.length > 0">
+                                                                             <ul class="m-0">
+                                                                             <li v-for="error in errors">{{ error }}</li>
+                                                                             </ul>
+                                                                             </div>
+
+                                                                             <div class="form-group">
+                                                                             <label>Name:</label>
+                                                                             <input type="text" placeholder="Mission Name" class="form-control"
+                                                                             v-model="update_mission.name">
+                                                                             </div>
+
+                                                                             <div class="form-group">
+                                                                             <label for="description">Description:</label>
+                                                                             <textarea cols="30" rows="5" class="form-control"
+                                                                             placeholder="Mission Description" v-model="update_mission.description"></textarea>
+                                                                             </div>
+
+                                                                             <div class="form-group">
+                                                                             <label for="update_due_date">Due Date:</label>
+                                                                             <datepicker name="update_due_date" id="update_due_date" placeholder="Due Date" v-model="update_mission.due_date" :format="date_format" :clear-button="clear_button"></datepicker>
+                                                                             </div>
+
+                                                                             </div>
+
+                                                                             <div class="modal-footer">
+                                                                             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                                             <button type="button" @click="updateMission" class="btn btn-primary">Submit</button>
+                                                                             </div>
+
+                                                                             </div><!-- /.modal-content -->
+
+                                                                             </div><!-- /.modal-dialog -->
+
+                                                                             </div>
+    <!-- /edit modal -->
+
+</div>
 </template>
 
 <script>
@@ -256,5 +251,4 @@ export default {
 
     }
 }
-
 </script>

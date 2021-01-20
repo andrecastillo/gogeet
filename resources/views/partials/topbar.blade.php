@@ -5,10 +5,9 @@
         <h1 class="m-0">{{ $title }}</h1>
         @endauth
 
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
 
             <!-- Right Side Of topbar -->
-            <ul class="navbar-nav ml-auto">
+            <ul class="navbar-nav">
                 <!-- Authentication Links -->
                 @guest
                     <li class="nav-item">
@@ -39,6 +38,5 @@
                     </li>
                 @endguest
             </ul>
-        </div>
     </div>
 </nav>

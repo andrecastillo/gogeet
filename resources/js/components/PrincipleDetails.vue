@@ -1,10 +1,12 @@
 <template>
-    <div>
-        <p>Title: {{ principle.name }}</p>
-        <p>Description: {{ principle.description }}</p>
-        <p>Created: {{ _formatDateTime(principle.created_at) }}</p>
-        <p>Updated: {{ _formatDateTime(principle.updated_at) }}</p>
-    </div>
+<div>
+
+    <h3>{{ principle.name }}</h3>
+    <p>Description: {{ principle.description }}</p>
+    <p>Created: {{ _formatDateTime(principle.created_at) }}</p>
+    <p>Updated: {{ _formatDateTime(principle.updated_at) }}</p>
+
+</div>
 </template>
 
 <script>
