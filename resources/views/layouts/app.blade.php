@@ -37,7 +37,7 @@
                         <!-- /top bar-->
                     </div>
 
-                    <div class="row h-100">
+                    <div class="row">
                         <!-- main content -->
                         <main class="col-7 h-100">
                             @yield('content')

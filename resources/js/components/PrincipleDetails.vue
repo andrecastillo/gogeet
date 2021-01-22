@@ -1,10 +1,16 @@
 <template>
-<div>
+<div class="container">
 
-    <h3>{{ principle.name }}</h3>
-    <p>Description: {{ principle.description }}</p>
-    <p>Created: {{ _formatDateTime(principle.created_at) }}</p>
-    <p>Updated: {{ _formatDateTime(principle.updated_at) }}</p>
+    <h4 class="mt-2">{{ principle.name }}</h4>
+
+    <div class="row">
+        <div class="col-2">Description: </div>
+        <div class="col">{{ principle.description || "-----" }}</div>
+    </div>
+
+    <div class="blockquote-footer">
+        <p>Last Update: {{ _formatDateTime(principle.updated_at) }}</p>
+    </div>
 
 </div>
 </template>

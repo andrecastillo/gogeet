@@ -1,11 +1,23 @@
 <template>
-    <div>
-        <p>Title: {{ task.name }}</p>
-        <p>Description: {{ task.description }}</p>
-        <p>Due: {{ _formatDateTime(task.due_date, 'MM/DD/YYYY') }}</p>
-        <p>Created: {{ _formatDateTime(task.created_at) }}</p>
-        <p>Updated: {{ _formatDateTime(task.updated_at) }}</p>
+<div class="container">
+
+    <h4 class="mt-2"> {{ task.name }}</h4>
+
+    <div class="row">
+        <div class="col-2">Description:</div>
+        <div class="col"><p class="">{{ task.description || "-----" }}</p></div>
     </div>
+
+    <div class="row">
+        <div class="col-2">Due</div>
+        <div class="col"><p>{{ _formatDateTime(task.due_date, 'MM/DD/YYYY') || '-----' }}</p></div>
+    </div>
+
+    <div class="blockquote-footer">
+        <p>Last Update: {{ _formatDateTime(task.updated_at) }}</p>
+    </div>
+
+</div>
 </template>
 
 <script>
