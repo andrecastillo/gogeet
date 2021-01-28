@@ -12,15 +12,14 @@ Principle.vue:
             <thead>
             <tr>
                 <th scope="col">Name</th>
-                <th scope="col">Action</th>
+                <th scope="col" class="text-center">Delete</th>
             </tr>
             </thead>
             <tbody>
             <tr v-for="(principle, index) in principles" @click="seeDetails(index)">
                 <td>{{ principle.name }}</td>
-                <td>
-                    <button @click="deletePrinciple(index)" class="btn btn-danger btn-xs" style="padding:8px"><span
-                        class="glyphicon glyphicon-trash"></span></button>
+                <td class="text-center">
+                        <i class="fa fa-trash fa-1 cursor-pointer" aria-hidden="true" @click="deletePrinciple(index)"></i>
                 </td>
             </tr>
             </tbody>
@@ -121,7 +120,7 @@ Principle.vue:
             },
 
             deletePrinciple (index) {
-                let conf = confirm('Do you ready want to delete this principle?')
+                let conf = confirm('Do you really want to delete this principle?')
                 if (conf === true) {
                     axios.delete('/principle/' + this.principles[index].id)
                         .then(response => {
@@ -161,3 +160,4 @@ Principle.vue:
     }
 
 </script>
+
