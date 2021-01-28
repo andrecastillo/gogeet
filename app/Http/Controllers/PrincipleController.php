@@ -36,7 +36,7 @@ class PrincipleController extends Controller
     public function index()
     {
         //
-        $principles = Principle::where(['user_id'=>Auth::user()->id])->get();
+        $principles = Principle::where(['user_id'=>Auth::user()->id])->select('name','id','user_id')->get();
 
         return response()->json([
             'principles' => $principles,

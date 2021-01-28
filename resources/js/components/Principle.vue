@@ -45,12 +45,12 @@ Principle.vue:
                         <div class="form-group">
                             <label for="names">Name:</label>
                             <input type="text" name="name" id="name" placeholder="Principle Name" class="form-control"
-                                   v-model="principle.name">
+                                   v-model="new_principle.name">
                         </div>
                         <div class="form-group">
                             <label for="description">Description:</label>
                             <textarea name="description" id="description" cols="30" rows="5" class="form-control"
-                                      placeholder="Principle Description" v-model="principle.description"></textarea>
+                                      placeholder="Principle Description" v-model="new_principle.description"></textarea>
                         </div>
                     </div>
 
@@ -73,7 +73,7 @@ Principle.vue:
 
         data () {
             return {
-                principle: {
+                new_principle: {
                     name: '',
                     description: '',
                 },
@@ -101,8 +101,8 @@ Principle.vue:
 
             createPrinciple () {
                 axios.post('/principle', {
-                    name: this.principle.name,
-                    description: this.principle.description,
+                    name: this.new_principle.name,
+                    description: this.new_principle.description,
                 })
                     .then(response => {
                         this._reset()
@@ -149,8 +149,8 @@ Principle.vue:
             },
 
             _reset () {
-                this.principle.name = ''
-                this.principle.description = ''
+                this.new_principle.name = ''
+                this.new_principle.description = ''
             },
 
             _formatDateTime (date, format = 'MM/DD/YYYY hh:mm A') {
