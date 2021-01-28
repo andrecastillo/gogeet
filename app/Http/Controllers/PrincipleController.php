@@ -123,7 +123,8 @@ class PrincipleController extends Controller
         $principle->save();
 
         return response()->json([
-            'message' => 'Principle updated successfully!'
+            'message' => 'Principle updated successfully!',
+            'updated_at' => $principle->updated_at
         ], 200);
     }
 

@@ -1,17 +1,18 @@
 <template>
 <div class="container">
 
-    <h4 class="mt-2" contenteditable="true" @focusout="editName" id="name">{{ principle.name }}</h4>
+    <input class="form-control form-control-lg mt-2 w-100" @focusin="getOriginalName" @focusout="editPrinciple" v-model="principle.name">
 
-    <div class="row">
-        <div class="col-2">Description: </div>
-        <div class="col" contenteditable="true">{{ principle.description || "-----" }}</div>
+    <div class="ml-3">
+        <div class="row">
+            <label class="col-2">Description: </label>
+            <textarea class="form-control" @focusin="getOriginalDescription" @focusout="editPrinciple" placeholder="-----" v-model="principle.description"></textarea>
+        </div>
+
+        <div class="blockquote-footer">
+            <p>Last Update: {{ _formatDateTime(principle.updated_at) }}</p>
+        </div>
     </div>
-
-    <div class="blockquote-footer">
-        <p>Last Update: {{ _formatDateTime(principle.updated_at) }}</p>
-    </div>
-
 </div>
 </template>
 
@@ -31,6 +32,7 @@ export default {
                 user_id: '',
             },
             original_name: '',
+            original_description: '',
         }
     },
     created() {
@@ -46,17 +48,27 @@ export default {
             });
         },
 
-        editName: function ()
+        getOriginalName: function ()
         {
             this.original_name = this.principle.name;
-            this.new_name = 'tst';
-            console.log(this.$refs.name);
-            /*
-            axios.patch('/principle/' + this.update_principle.id, {
-                name: this.update_principle.name,
+        },
+
+        getOriginalDescription: function()
+        {
+            this.original_description = this.principle.description;
+        },
+
+        editPrinciple: function()
+        {
+            axios.patch('/principle/' + this.principle.id, {
+                name: this.principle.name,
+                description: this.principle.description,
             })
             .then(response => {
-                $("#update_principle_model").modal("hide");
+                // update last updated text
+                this.principle.updated_at = response.data.updated_at;
+
+                // now update the value in the sibling component if it was name not description
             })
             .catch(error => {
                 this.errors = [];
@@ -67,7 +79,6 @@ export default {
                     this.errors.push(error.response.data.errors.description[0]);
                 }
             });
-            */
         },
 
         _formatDateTime(date, format = 'MM/DD/YYYY hh:mm A') {
