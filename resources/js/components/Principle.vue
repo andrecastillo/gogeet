@@ -16,7 +16,7 @@ Principle.vue:
             </tr>
             </thead>
             <tbody>
-            <tr v-for="(principle, index) in principles" @click="seeDetails(index)">
+            <tr v-for="(principle, index) in principles" @click="seeDetails(index)" v-bind:class="{'table-active':(index == active)}">
                 <td>{{ principle.name }}</td>
                 <td class="text-center">
                         <i class="fa fa-trash fa-1 cursor-pointer" aria-hidden="true" @click="deletePrinciple(index)"></i>
@@ -78,6 +78,7 @@ Principle.vue:
                 },
                 errors: [],
                 principles: [],
+                active: null,
             }
         },
 
@@ -132,9 +133,10 @@ Principle.vue:
             },
 
             seeDetails (index) {
+                this.active = index;
                 this.$root.$emit('loadDetails', {
                     id: this.principles[index].id,
-                    index: index
+                    index: index,
                 });
             },
 
