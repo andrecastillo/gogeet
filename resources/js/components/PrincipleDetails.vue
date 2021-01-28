@@ -13,6 +13,15 @@
             <p>Last Update: {{ _formatDateTime(principle.updated_at) }}</p>
         </div>
     </div>
+
+    <!-- possibly where i put errors
+    <div class="alert alert-danger" v-if="errors.length > 0">
+        <ul class="m-0">
+            <li v-for="error in errors">{{ error }}</li>
+        </ul>
+    </div>
+    -->
+
 </div>
 </template>
 
@@ -31,8 +40,9 @@ export default {
                 updated_at: '',
                 user_id: '',
             },
-            original_name: '',
-            original_description: '',
+            index: null,
+            original_name: null,
+            original_description: null,
         }
     },
     created() {
@@ -40,9 +50,10 @@ export default {
     },
     methods: {
 
-        getDetails: function (id)
+        getDetails: function (data)
         {
-            axios.get('/principle/'+id)
+            this.index = data.index
+            axios.get('/principle/'+data.id)
             .then(response => {
                 this.principle = response.data.principle;
             });
@@ -60,6 +71,10 @@ export default {
                     this.principle.updated_at = response.data.updated_at;
 
                     // now update the value in the sibling component if it was name not description
+                    this.$root.$emit('updateName', {
+                        new_name: this.principle.name,
+                        index: this.index
+                    });
                 })
                 .catch(error => {
                     this.errors = [];
@@ -70,8 +85,6 @@ export default {
                         this.errors.push(error.response.data.errors.description[0]);
                     }
                 });
-            } else {
-                console.log('no change so, don');
             }
         },
 

@@ -26,7 +26,7 @@
             <div class="row h-100">
                 <!-- left sidebar -->
                 <nav id="sidebarMenu" class="col navbar-dark bg-dark">
-                    @include('partials.sidebar')
+                    @include('partials.leftsidebar')
                 </nav>
                 <!-- /left sidebar -->
 
