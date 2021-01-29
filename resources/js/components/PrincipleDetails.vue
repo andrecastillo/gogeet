@@ -47,6 +47,7 @@ export default {
     },
     created() {
         this.$root.$on('loadDetails', this.getDetails);
+        this.$root.$on('principleDeleted', this.principleDeleted);
     },
     methods: {
 
@@ -86,6 +87,15 @@ export default {
                     }
                 });
             }
+        },
+
+        principleDeleted: function() {
+            this._reset();
+        },
+
+        _reset() {
+            this.principle.name = ''
+            this.principle.description = ''
         },
 
         _formatDateTime(date, format = 'MM/DD/YYYY hh:mm A') {

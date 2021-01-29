@@ -19,7 +19,7 @@ Principle.vue:
             <tr v-for="(principle, index) in principles" @click="seeDetails(index)" v-bind:class="{'table-active':(index == active)}">
                 <td>{{ principle.name }}</td>
                 <td class="text-center">
-                        <i class="fa fa-trash fa-1 cursor-pointer" aria-hidden="true" @click="deletePrinciple(index)"></i>
+                    <i class="fa fa-trash fa-1 cursor-pointer" aria-hidden="true" @click.stop="deletePrinciple(index)"></i>
                 </td>
             </tr>
             </tbody>
@@ -82,7 +82,7 @@ Principle.vue:
             }
         },
 
-        created() {
+        created () {
             this.$root.$on('updateName', this.updateName);
         },
 
@@ -92,14 +92,14 @@ Principle.vue:
 
         methods: {
 
-            readPrinciples () {
+            readPrinciples: function() {
                 axios.get('/principle')
                     .then(response => {
                         this.principles = response.data.principles
                     })
             },
 
-            createPrinciple () {
+            createPrinciple: function() {
                 axios.post('/principle', {
                     name: this.new_principle.name,
                     description: this.new_principle.description,
@@ -120,19 +120,39 @@ Principle.vue:
                     })
             },
 
-            deletePrinciple (index) {
+            deletePrinciple: function(index) {
                 let conf = confirm('Do you really want to delete this principle?')
                 if (conf === true) {
                     axios.delete('/principle/' + this.principles[index].id)
                         .then(response => {
                             this.principles.splice(index, 1)
+                            this.nextOrPrevPrinciple(index);
                         })
                         .catch(error => {
                         })
                 }
             },
 
-            seeDetails (index) {
+            nextOrPrevPrinciple: function(index) {
+                if (this.active !== null) {
+                    // the one that was deleted was not the last one but the last one was selected
+                    if(index !== this.active && this.active === this.principles.length) {
+                        this.active = this.principles.length - 1;
+                    }
+                    // the one that was deleted was the one selected but it was not the last one
+                    if (index === this.active && this.active !== this.principles.length) {
+                        this.$root.$emit('principleDeleted')
+                        this.seeDetails(index);
+                    }
+                    // the one that was deleted was the one that was selected and it was the last one
+                    if(index === this.active && this.active === this.principles.length) {
+                        this.$root.$emit('principleDeleted')
+                        this.seeDetails(index - 1);
+                    }
+                }
+            },
+
+            seeDetails: function(index) {
                 this.active = index;
                 this.$root.$emit('loadDetails', {
                     id: this.principles[index].id,
@@ -140,7 +160,7 @@ Principle.vue:
                 });
             },
 
-            updateName(data) {
+            updateName: function(data) {
                 this.principles[data.index].name = data.new_name;
             },
 
