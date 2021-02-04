@@ -128,7 +128,8 @@ class MissionController extends Controller
         $mission->save();
 
         return response()->json([
-            'message' => 'Mission updated successfully!'
+            'message' => 'Mission updated successfully!',
+            'updated_at' => $mission->updated_at
         ], 200);
     }
 

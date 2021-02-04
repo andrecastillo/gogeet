@@ -42,7 +42,7 @@ Principle.vue:
                             </ul>
                         </div>
                         <div class="form-group">
-                            <label for="names">Name:</label>
+                            <label for="name">Name:</label>
                             <input type="text" name="name" id="name" placeholder="Principle Name" class="form-control"
                                    v-model="new_principle.name">
                         </div>
@@ -72,12 +72,12 @@ Principle.vue:
 
         data () {
             return {
+                principles: [],
                 new_principle: {
                     name: '',
                     description: '',
                 },
                 errors: [],
-                principles: [],
                 active: null,
             }
         },
