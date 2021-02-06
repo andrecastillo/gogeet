@@ -102,7 +102,7 @@ Mission.vue:
         },
 
         created () {
-            this.$root.$on('updateName', this.updateName);
+            this.$root.$on('updateRow', this.updateRow);
         },
 
         mounted () {
@@ -178,6 +178,11 @@ Mission.vue:
                     id: this.missions[index].id,
                     index: index,
                 });
+            },
+
+            updateRow: function(data) {
+                this.missions[data.index].name = data.new_name;
+                this.missions[data.index].due_date = data.new_due_date;
             },
 
             _initAddMission () {

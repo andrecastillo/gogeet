@@ -83,7 +83,7 @@ Principle.vue:
         },
 
         created () {
-            this.$root.$on('updateName', this.updateName);
+            this.$root.$on('updateRow', this.updateRow);
         },
 
         mounted () {
@@ -160,7 +160,7 @@ Principle.vue:
                 });
             },
 
-            updateName: function(data) {
+            updateRow: function(data) {
                 this.principles[data.index].name = data.new_name;
             },
 

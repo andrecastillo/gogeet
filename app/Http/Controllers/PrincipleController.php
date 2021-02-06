@@ -117,9 +117,7 @@ class PrincipleController extends Controller
         ]);
 
         $principle->name = request('name');
-
         $principle->description = request('description');
-
         $principle->save();
 
         return response()->json([

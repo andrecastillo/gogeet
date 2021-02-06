@@ -1,17 +1,46 @@
 <template>
 <div class="container">
 
-    <input class="form-control form-control-lg mt-2 w-100" @focusout="editMission" v-model="mission.name">
+    <input
+        class="form-control form-control-lg mt-2 w-100"
+        @focusout="editMission"
+        v-model="mission.name"
+    >
 
     <div class="ml-3">
-        <div class="row">
-            <label class="col-2">Description: </label>
-            <textarea class="form-control" @focusout="editMission" placeholder="-----" v-model="mission.description"></textarea>
+        <div class="row mt-2">
+            <div class="col-2">
+                <label class="col-2">Description: </label>
+            </div>
+            <div class="col">
+                <textarea
+                    id="description"
+                    class="form-control"
+                    rows="5"
+                    style="resize: none;"
+                    @focusout="editMission"
+                    placeholder="-----"
+                    v-model="mission.description">
+                </textarea>
+            </div>
         </div>
 
-        <div class="row">
-            <label class="col-2">Due: </label>
-            <datepicker name="due_date" id="modify_due_date" placeholder="Due Date" v-model="mission.due_date" :format="date_format" :clear-button="clear_button"></datepicker>
+        <div class="row mt-2">
+            <div class="col-2">
+                <label class="col-2">Accomplish: </label>
+            </div>
+            <div class="col">
+                <datepicker
+                    name="due_date"
+                    id="modify_due_date"
+                    placeholder="Due Date"
+                    @closed="editMission"
+                    @cleared="editMission"
+                    v-model="mission.due_date"
+                    :format="date_format"
+                    :clear-button="clear_button">
+                </datepicker>
+            </div>
         </div>
 
         <div class="blockquote-footer">
@@ -56,6 +85,7 @@ export default {
             index: null,
             original_name: null,
             original_description: null,
+            original_due_date: null,
             date_format: 'MM/dd/yyyy',
             clear_button: true,
         }
@@ -72,24 +102,29 @@ export default {
             axios.get('/mission/'+data.id)
             .then(response => {
                 this.mission = response.data.mission;
+                this.mission.due_date = response.data.mission.due_date === null ? null : moment(response.data.mission.due_date).format('MM/DD/YYYY');
+                this.original_name = this.mission.name;
+                this.original_description = this.mission.description;
+                this.original_due_date = this.mission.due_date;
             });
         },
 
         editMission: function()
         {
-            if (this.original_name !== this.mission.name || this.original_description !== this.mission.description) {
+            if (this.original_name !== this.mission.name || this.original_description !== this.mission.description || this.original_due_date !== moment(this.mission.due_date).format('MM/DD/YYYY')) {
                 axios.patch('/mission/' + this.mission.id, {
                     name: this.mission.name,
                     description: this.mission.description,
-                    due_date: this.mission.due_date,
+                    due_date: this.mission.due_date === null || this.mission.due_date ===  '' ? null : moment(this.mission.due_date).format("YYYY-MM-DD")
                 })
                 .then(response => {
                     // update last updated text
                     this.mission.updated_at = response.data.updated_at;
 
-                    // now update the value in the sibling component if it was name not description
-                    this.$root.$emit('updateName', {
+                    // now update the value in the sibling component if it was name or due date not description
+                    this.$root.$emit('updateRow', {
                         new_name: this.mission.name,
+                        new_due_date: this.mission.due_date,
                         index: this.index
                     });
                 })
@@ -112,6 +147,7 @@ export default {
         _reset() {
             this.mission.name = ''
             this.mission.description = ''
+            this.mission.due_date = ''
         },
 
         _formatDateTime(date, format = 'MM/DD/YYYY hh:mm A') {

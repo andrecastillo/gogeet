@@ -1,12 +1,28 @@
 <template>
 <div class="container">
 
-    <input class="form-control form-control-lg mt-2 w-100" @focusout="editPrinciple" v-model="principle.name">
+    <input
+        class="form-control form-control-lg mt-2 w-100"
+        @focusout="editPrinciple"
+        v-model="principle.name"
+    >
 
     <div class="ml-3">
-        <div class="row">
-            <label class="col-2">Description: </label>
-            <textarea class="form-control" @focusout="editPrinciple" placeholder="-----" v-model="principle.description"></textarea>
+        <div class="row mt-2">
+            <div class="col-2">
+                <label for="description">Description: </label>
+            </div>
+            <div class="col">
+                <textarea
+                    id="description"
+                    class="form-control"
+                    rows="5"
+                    style="resize: none;"
+                    @focusout="editPrinciple"
+                    placeholder="-----"
+                    v-model="principle.description">
+                </textarea>
+            </div>
         </div>
 
         <div class="blockquote-footer">
@@ -57,6 +73,8 @@ export default {
             axios.get('/principle/'+data.id)
             .then(response => {
                 this.principle = response.data.principle;
+                this.original_name = this.principle.name;
+                this.original_description = this.principle.description;
             });
         },
 
