@@ -90,7 +90,7 @@ export default {
                     this.principle.updated_at = response.data.updated_at;
 
                     // now update the value in the sibling component if it was name not description
-                    this.$root.$emit('updateName', {
+                    this.$root.$emit('updateRow', {
                         new_name: this.principle.name,
                         index: this.index
                     });

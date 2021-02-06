@@ -62,7 +62,6 @@ class GoalController extends Controller
      */
     public function store(Request $request)
     {
-
         $this->validate($request, [
             'name' => 'string|required|max:256',
             'description' => 'string|nullable',
@@ -110,9 +109,10 @@ class GoalController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
      * @return \Illuminate\Http\JsonResponse
+     * @throws \Illuminate\Validation\ValidationException
      */
     public function update(Request $request, Goal $goal)
     {
@@ -128,15 +128,17 @@ class GoalController extends Controller
         $goal->save();
 
         return response()->json([
-            'message' => 'Goal updated successfully!'
+            'message' => 'Goal updated successfully!',
+            'updated_at' => $goal->updated_at
         ], 200);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\JsonResponse
+     * @throws \Exception
      */
     public function destroy(Goal $goal)
     {
