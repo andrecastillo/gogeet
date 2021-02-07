@@ -30,13 +30,13 @@
         </div>
     </div>
 
-    <!-- possibly where i put errors
+    <!-- errors -->
     <div class="alert alert-danger" v-if="errors.length > 0">
         <ul class="m-0">
             <li v-for="error in errors">{{ error }}</li>
         </ul>
     </div>
-    -->
+    <!-- /errors-->
 
 </div>
 </template>
@@ -59,6 +59,7 @@ export default {
             index: null,
             original_name: null,
             original_description: null,
+            errors: [],
         }
     },
     created() {
@@ -69,6 +70,7 @@ export default {
 
         getDetails: function (data)
         {
+            this._clearErrors();
             this.index = data.index
             axios.get('/principle/'+data.id)
             .then(response => {
@@ -89,6 +91,8 @@ export default {
                     // update last updated text
                     this.principle.updated_at = response.data.updated_at;
 
+                    this._clearErrors();
+
                     // now update the value in the sibling component if it was name not description
                     this.$root.$emit('updateRow', {
                         new_name: this.principle.name,
@@ -96,12 +100,13 @@ export default {
                     });
                 })
                 .catch(error => {
-                    this.errors = [];
-                    if (error.response.data.errors.name) {
-                        this.errors.push(error.response.data.errors.name[0]);
-                    }
-                    if (error.response.data.errors.description) {
-                        this.errors.push(error.response.data.errors.description[0]);
+                    this._clearErrors();
+                    if(error.response) {
+                        this.errors[0] = 'Response error. Please try again.';
+                    } else if (error.request) {
+                        this.errors[0] = 'Request error. Please try again.';
+                    } else {
+                        this.errors[0] = 'Unknown error. Please try again.';
                     }
                 });
             }
@@ -118,6 +123,10 @@ export default {
 
         _formatDateTime(date, format = 'MM/DD/YYYY hh:mm A') {
             return date === null ? '' : moment(date).format(format);
+        },
+
+        _clearErrors() {
+            this.errors = [];
         },
 
     }
